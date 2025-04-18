@@ -14,14 +14,18 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GyattRun extends RandomRun {
 
     public GyattRun() {
-        super(Main.class.getResource("/images/gyatt.png"), Main.class.getResource("/audio/gyatt.wav"));
+        super(Main.class.getResource("/images/gyatt.png"), Main.class.getResource("/audio/gyatt.wav"), 318, 360);
 
         // init l'image taille et position random, opacité très faible et son normal
+        float ratio = (float) imageHeight / imageWitdh;
+
         ThreadLocalRandom rand = ThreadLocalRandom.current();
-        int size = rand.nextInt(100, 200);
-        int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width-size);
-        int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height-size);
-        init(size, size, x, y);
+        int width = rand.nextInt(100, 200);
+        int height = Math.round(width * ratio);
+
+        int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width - width);
+        int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height - height);
+        init(width, height, x, y);
 
         setFocusableWindowState(false);
         setVisible(true);

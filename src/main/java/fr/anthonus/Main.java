@@ -10,6 +10,8 @@ public class Main {
     private static Thread whileTrueThread;
 
     public static void main(String[] args) throws AWTException {
+
+
         PopupMenu popup = new PopupMenu();
         addTrayItems(popup);
 

@@ -8,21 +8,31 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RatRun extends RandomRun {
     private Thread changeThread; // thread pour changer la position de l'image toutes les 1 secondes
 
+    private List<BufferedImage> frames;
+    private int currentFrame = 0;
+
     public RatRun() {
-        super(Main.class.getResource("/images/rat-dance.gif"), Main.class.getResource("/audio/rat-dance.wav"));
+        super(Main.class.getResource("/images/rat-dance.gif"), Main.class.getResource("/audio/rat-dance.wav"), 310, 478);
+        gifFps = 16;
+
+        try {
+            frames = loadGifFrames(imageURL);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         // init l'image taille et position random
-        ThreadLocalRandom rand = ThreadLocalRandom.current();
-        int baseWidth = 310;
-        int baseHeight = 478;
-        float ratio = (float) baseHeight / baseWidth;
+        float ratio = (float) imageHeight / imageWitdh;
 
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
         int width = rand.nextInt(100, 200);
         int height = Math.round(width * ratio);
 
@@ -44,13 +54,53 @@ public class RatRun extends RandomRun {
         setLocation(x, y);
 
         // set de l'image
-        ImageIcon imageIcon = new ImageIcon(imageURL);
-        Image scaledImage = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
-        ImageIcon resizedIcon = new ImageIcon(scaledImage);
+//        ImageIcon imageIcon = new ImageIcon(imageURL);
+//        imageIcon.setImage(imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+//
+//        imageLabel = new JLabel(imageIcon);
+//        imageLabel.setOpaque(false);
+//        add(imageLabel);
 
-        imageLabel = new JLabel(resizedIcon);
+        imageLabel = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (!frames.isEmpty()) {
+                    BufferedImage frame = frames.get(currentFrame);
+
+                    // Calcul du ratio d'aspect
+                    int originalWidth = frame.getWidth();
+                    int originalHeight = frame.getHeight();
+                    float aspectRatio = (float) originalWidth / originalHeight;
+
+                    // Calcul des dimensions redimensionnées
+                    int newWidth = width;
+                    int newHeight = height;
+
+                    if (width / (float) height > aspectRatio) {
+                        newWidth = Math.round(height * aspectRatio);
+                    } else {
+                        newHeight = Math.round(width / aspectRatio);
+                    }
+
+                    // Centrage de l'image
+                    int x = (width - newWidth) / 2;
+                    int y = (height - newHeight) / 2;
+
+                    // Dessin de l'image redimensionnée
+                    g.drawImage(frame, x, y, newWidth, newHeight, this);
+                }
+            }
+        };
+        imageLabel.setOpaque(false);
         add(imageLabel);
 
+        int delayFPS = 1000 / gifFps;
+        Timer timer = new Timer(delayFPS, e -> {
+            currentFrame = (currentFrame + 1) % frames.size();
+            repaint();
+        });
+        timer.start();
 
         // Lancement du son
         playSound();

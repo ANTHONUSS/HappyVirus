@@ -17,14 +17,18 @@ public class GokuRun extends RandomRun {
     private final int maxChangeCount;
 
     public GokuRun() {
-        super(Main.class.getResource("/images/goku.png"), Main.class.getResource("/audio/goku/goku.wav"));
+        super(Main.class.getResource("/images/goku.png"), Main.class.getResource("/audio/goku/goku.wav"), 720, 720);
 
         // init l'image taille et position random, opacité faible, apparaît petit à petit et son aussi
-       ThreadLocalRandom rand = ThreadLocalRandom.current();
-        int size = rand.nextInt(100, 200);
-        int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width - size);
-        int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height - size);
-        init(size, size, x, y);
+        float ratio = (float) imageHeight / imageWitdh;
+
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+        int width = rand.nextInt(100, 200);
+        int height = Math.round(width * ratio);
+
+        int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width - width);
+        int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height - height);
+        init(width, height, x, y);
 
         // set du maximum de changements de fenêtre
         maxChangeCount = rand.nextInt(5, 10);

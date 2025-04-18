@@ -31,6 +31,7 @@ jlink {
         appVersion = version
         icon = 'icon.ico'
 
+
         // Uncomment the following lines to create an installer
 //        installerName = 'HappyVirus'
 //        vendor = 'ANTHONUS'
@@ -44,7 +45,6 @@ repositories {
 }
 
 dependencies {
-
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
