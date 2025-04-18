@@ -45,11 +45,12 @@ public class Main {
                     return;
                 }
 
-                int randomRunType = rand.nextInt(3);
+                int randomRunType = rand.nextInt(4);
                 switch (randomRunType) {
                     case 0 -> new GokuRun();
                     case 1 -> new GyattRun();
                     case 2 -> new RatRun();
+                    case 3 -> new AmogusRun();
                 }
             }
         });
@@ -75,6 +76,11 @@ public class Main {
         MenuItem ratRunItem = new MenuItem("RatRun");
         ratRunItem.addActionListener(e -> new RatRun());
         runMenu.add(ratRunItem);
+
+        // Ajout de l'item pour le AmogusRun
+        MenuItem amogusRunItem = new MenuItem("AmogusRun");
+        amogusRunItem.addActionListener(e -> new AmogusRun());
+        runMenu.add(amogusRunItem);
 
         // Ajout du menu au popup
         popup.add(runMenu);

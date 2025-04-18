@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RatRun extends RandomRun {
     private Thread changeThread; // thread pour changer la position de l'image toutes les 1 secondes
 
-    private List<BufferedImage> frames;
+    private final List<BufferedImage> frames;
     private int currentFrame = 0;
 
     public RatRun() {
@@ -54,13 +54,6 @@ public class RatRun extends RandomRun {
         setLocation(x, y);
 
         // set de l'image
-//        ImageIcon imageIcon = new ImageIcon(imageURL);
-//        imageIcon.setImage(imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
-//
-//        imageLabel = new JLabel(imageIcon);
-//        imageLabel.setOpaque(false);
-//        add(imageLabel);
-
         imageLabel = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -92,7 +85,6 @@ public class RatRun extends RandomRun {
                 }
             }
         };
-        imageLabel.setOpaque(false);
         add(imageLabel);
 
         int delayFPS = 1000 / gifFps;

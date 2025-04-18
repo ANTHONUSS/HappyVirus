@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GokuRun extends RandomRun {
     private Thread appearThread;
+
     private int changeCount = 0;
     private final int maxChangeCount;
 
