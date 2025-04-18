@@ -3,7 +3,6 @@ package fr.anthonus.randomRuns;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.net.URL;
 
 public abstract class RandomRun extends JFrame {
@@ -38,7 +37,7 @@ public abstract class RandomRun extends JFrame {
         }
     }
 
-    protected abstract void init(int size, int x, int y);
+    protected abstract void init(int width, int heigth, int x, int y);
 
     protected abstract void playSound();
 

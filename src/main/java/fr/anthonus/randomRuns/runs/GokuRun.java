@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GokuRun extends RandomRun {
@@ -25,7 +24,7 @@ public class GokuRun extends RandomRun {
         int size = rand.nextInt(100, 200);
         int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width - size);
         int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height - size);
-        init(size, x, y);
+        init(size, size, x, y);
 
         // set du maximum de changements de fenêtre
         maxChangeCount = rand.nextInt(5, 10);
@@ -38,14 +37,14 @@ public class GokuRun extends RandomRun {
     }
 
     @Override
-    protected void init(int size, int x, int y) {
+    protected void init(int width, int heigth, int x, int y) {
         // set de la taille et de la position
-        setSize(size, size);
+        setSize(width, heigth);
         setLocation(x, y);
 
         // set de l'image
         ImageIcon imageIcon = new ImageIcon(imageURL);
-        imageIcon.setImage(imageIcon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH));
+        imageIcon.setImage(imageIcon.getImage().getScaledInstance(width, heigth, Image.SCALE_DEFAULT));
 
         imageLabel = new JLabel(imageIcon);
         setOpacity(0.0f);
@@ -82,8 +81,8 @@ public class GokuRun extends RandomRun {
                     }
 
                     ThreadLocalRandom rand = ThreadLocalRandom.current();
-                    int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width - size);
-                    int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height - size);
+                    int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width - width);
+                    int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height - heigth);
                     setLocation(x, y);
                     changeCount++;
                 }

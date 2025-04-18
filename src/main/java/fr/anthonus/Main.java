@@ -2,10 +2,7 @@ package fr.anthonus;
 
 import fr.anthonus.randomRuns.runs.*;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
-import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
@@ -46,10 +43,11 @@ public class Main {
                     return;
                 }
 
-                int randomRunType = rand.nextInt(2);
+                int randomRunType = rand.nextInt(3);
                 switch (randomRunType) {
                     case 0 -> new GokuRun();
                     case 1 -> new GyattRun();
+                    case 2 -> new RatRun();
                 }
             }
         });
@@ -71,6 +69,11 @@ public class Main {
         gyattRunItem.addActionListener(e -> new GyattRun());
         runMenu.add(gyattRunItem);
 
+        // Ajout de l'item pour le RatRun
+        MenuItem ratRunItem = new MenuItem("RatRun");
+        ratRunItem.addActionListener(e -> new RatRun());
+        runMenu.add(ratRunItem);
+
         // Ajout du menu au popup
         popup.add(runMenu);
 
@@ -81,14 +84,18 @@ public class Main {
             if (checkbox.getState()) {
                 activated = true;
                 whileTrue();
+                System.out.println("Activated");
             } else {
                 activated = false;
                 if (whileTrueThread != null && whileTrueThread.isAlive()) {
                     whileTrueThread.interrupt();
                 }
+                System.out.println("Deactivated");
             }
         });
         popup.add(checkbox);
+
+        popup.addSeparator();
 
         // Ajout de l'exit
         MenuItem exitItem = new MenuItem("Quitter");
