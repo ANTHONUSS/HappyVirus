@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GyattRun extends RandomRun {
 
@@ -17,13 +18,15 @@ public class GyattRun extends RandomRun {
         super(Main.class.getResource("/images/gyatt.png"), Main.class.getResource("/audio/gyatt.wav"));
 
         // init l'image taille et position random, opacité très faible et son normal
-        Random rand = new Random();
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
         int size = rand.nextInt(100, 200);
         int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width-size);
         int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height-size);
         init(size, x, y);
 
+        setFocusableWindowState(false);
         setVisible(true);
+        setFocusableWindowState(true);
 
         System.out.println("GyattRun started");
     }
@@ -65,7 +68,7 @@ public class GyattRun extends RandomRun {
 
         // set du volume
         FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        volumeControl.setValue(-15.0f);
+        volumeControl.setValue(maxVolume);
     }
 
     @Override

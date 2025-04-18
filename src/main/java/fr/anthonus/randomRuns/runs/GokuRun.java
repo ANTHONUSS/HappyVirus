@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GokuRun extends RandomRun {
     private Thread appearThread;
@@ -20,7 +21,7 @@ public class GokuRun extends RandomRun {
         super(Main.class.getResource("/images/goku.png"), Main.class.getResource("/audio/goku/goku.wav"));
 
         // init l'image taille et position random, opacité faible, apparaît petit à petit et son aussi
-        Random rand = new Random();
+       ThreadLocalRandom rand = ThreadLocalRandom.current();
         int size = rand.nextInt(100, 200);
         int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width - size);
         int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height - size);
@@ -29,7 +30,9 @@ public class GokuRun extends RandomRun {
         // set du maximum de changements de fenêtre
         maxChangeCount = rand.nextInt(5, 10);
 
+        setFocusableWindowState(false);
         setVisible(true);
+        setFocusableWindowState(true);
 
         System.out.println("Goku started");
     }
@@ -78,7 +81,7 @@ public class GokuRun extends RandomRun {
                         ex.printStackTrace();
                     }
 
-                    Random rand = new Random();
+                    ThreadLocalRandom rand = ThreadLocalRandom.current();
                     int x = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().width - size);
                     int y = rand.nextInt(Toolkit.getDefaultToolkit().getScreenSize().height - size);
                     setLocation(x, y);
@@ -126,7 +129,7 @@ public class GokuRun extends RandomRun {
             float volume = volumeControl.getMinimum();
 
             float opacityStep = (1.0f - 0.0f) / 100;
-            float volumeStep = (-15.0f - (-80.0f)) / 100;
+            float volumeStep = (maxVolume - (volumeControl.getMinimum())) / 100;
 
 
 

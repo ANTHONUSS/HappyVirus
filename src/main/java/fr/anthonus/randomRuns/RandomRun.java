@@ -13,6 +13,8 @@ public abstract class RandomRun extends JFrame {
     protected final URL imageURL;
     protected final URL soundURL;
 
+    protected final float maxVolume = -20.0f;
+
 
     protected RandomRun(URL imageURL, URL soundURL) throws LineUnavailableException {
         // set des paths
