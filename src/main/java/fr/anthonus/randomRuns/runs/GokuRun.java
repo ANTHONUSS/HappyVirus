@@ -15,9 +15,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GokuRun extends RandomRun {
     private Thread appearThread;
     private int changeCount = 0;
-    private int maxChangeCount;
+    private final int maxChangeCount;
 
-    public GokuRun() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+    public GokuRun() {
         super(Main.class.getResource("/images/goku.png"), Main.class.getResource("/audio/goku/goku.wav"));
 
         // init l'image taille et position random, opacité faible, apparaît petit à petit et son aussi
@@ -38,7 +38,7 @@ public class GokuRun extends RandomRun {
     }
 
     @Override
-    protected void init(int size, int x, int y) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    protected void init(int size, int x, int y) {
         // set de la taille et de la position
         setSize(size, size);
         setLocation(x, y);
@@ -92,13 +92,17 @@ public class GokuRun extends RandomRun {
     }
 
     @Override
-    protected void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    protected void playSound() {
         // set du son
-        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundURL);
-        clip.open(audioIn);
-        clip.setMicrosecondPosition(53_000_000L); // set de la position de début à 53 secondes
-        clip.start();
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundURL);
+            clip.open(audioIn);
+            clip.setMicrosecondPosition(53_000_000L); // set de la position de début à 53 secondes
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
         // set du volume
@@ -133,18 +137,16 @@ public class GokuRun extends RandomRun {
 
 
 
-            while (opacity < 1.0f || volume < -15.0f) {
-                opacity += opacityStep;
+            while (opacity < 1.0f || volume < maxVolume) {
+                opacity = Math.min(opacity + opacityStep, 1.0f);
                 setOpacity(opacity);
 
-                volume += volumeStep;
+                volume = Math.min(volume + volumeStep, maxVolume);
                 volumeControl.setValue(volume);
 
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                } catch (InterruptedException _) {}
             }
         });
 

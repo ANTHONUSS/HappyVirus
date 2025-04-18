@@ -16,7 +16,7 @@ public abstract class RandomRun extends JFrame {
     protected final float maxVolume = -20.0f;
 
 
-    protected RandomRun(URL imageURL, URL soundURL) throws LineUnavailableException {
+    protected RandomRun(URL imageURL, URL soundURL) {
         // set des paths
         this.imageURL = imageURL;
         this.soundURL = soundURL;
@@ -31,12 +31,16 @@ public abstract class RandomRun extends JFrame {
         setBackground(new Color(0, 0, 0, 0));
 
         // création du clip
-        clip = AudioSystem.getClip();
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    protected abstract void init(int size, int x, int y) throws UnsupportedAudioFileException, IOException, LineUnavailableException;
+    protected abstract void init(int size, int x, int y);
 
-    protected abstract void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException;
+    protected abstract void playSound();
 
     protected abstract void stop();
 

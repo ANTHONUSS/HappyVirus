@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GyattRun extends RandomRun {
 
-    public GyattRun() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+    public GyattRun() {
         super(Main.class.getResource("/images/gyatt.png"), Main.class.getResource("/audio/gyatt.wav"));
 
         // init l'image taille et position random, opacité très faible et son normal
@@ -32,7 +32,7 @@ public class GyattRun extends RandomRun {
     }
 
     @Override
-    protected void init(int size, int x, int y) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    protected void init(int size, int x, int y) {
         // set de la taille et de la position
         setSize(size, size);
         setLocation(x, y);
@@ -59,12 +59,16 @@ public class GyattRun extends RandomRun {
     }
 
     @Override
-    protected void playSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+    protected void playSound() {
         // set du son
-        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundURL);
-        clip.open(audioIn);
-        clip.start();
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundURL);
+            clip.open(audioIn);
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
 
         // set du volume
         FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
