@@ -20,7 +20,7 @@ public class RatRun extends RandomRun {
     private int currentFrame = 0;
 
     public RatRun() {
-        super(Main.class.getResource("/images/rat-dance.gif"), Main.class.getResource("/audio/rat-dance.wav"), 310, 478);
+        super(Main.class.getResource("/images/rat-dance/rat-dance.gif"), Main.class.getResource("/audio/rat-dance/rat-dance.wav"), 310, 478);
         gifFps = 16;
 
         try {

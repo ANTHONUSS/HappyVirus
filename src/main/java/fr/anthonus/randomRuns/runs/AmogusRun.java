@@ -16,7 +16,7 @@ public class AmogusRun extends RandomRun {
     private int position = 0;
 
     public AmogusRun() {
-        super(Main.class.getResource("/images/amogus.png"), Main.class.getResource("/audio/amogus.wav"), 1525, 2049);
+        super(Main.class.getResource("/images/amogus/amogus.png"), Main.class.getResource("/audio/amogus/amogus.wav"), 1525, 2049);
 
         // init l'image taille et position random, opacité faible, apparaît petit à petit et son aussi
         float ratio = (float) imageHeight / imageWitdh;

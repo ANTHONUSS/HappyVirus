@@ -17,8 +17,8 @@ public abstract class RandomRun extends JFrame {
     protected final Clip clip;
     protected JLabel imageLabel;
 
-    protected final URL imageURL;
-    protected final URL soundURL;
+    protected URL imageURL;
+    protected URL soundURL;
 
     protected final float maxVolume = -20.0f;
 

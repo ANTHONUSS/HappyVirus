@@ -18,7 +18,7 @@ public class GokuRun extends RandomRun {
     private final int maxChangeCount;
 
     public GokuRun() {
-        super(Main.class.getResource("/images/goku.png"), Main.class.getResource("/audio/goku/goku.wav"), 720, 720);
+        super(Main.class.getResource("/images/goku/goku.png"), Main.class.getResource("/audio/goku/goku.wav"), 720, 720);
 
         // init l'image taille et position random, opacité faible, apparaît petit à petit et son aussi
         float ratio = (float) imageHeight / imageWitdh;
