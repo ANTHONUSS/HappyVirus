@@ -2,7 +2,7 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Users\ANTHONUS\Desktop\HappyVirus-0.0.1.jar</jar>
+  <jar>C:\Users\ANTHONUS\Desktop\HappyVirus.jar</jar>
   <outfile>C:\Users\ANTHONUS\Desktop\HappyVirus.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>

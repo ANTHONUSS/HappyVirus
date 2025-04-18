@@ -23,7 +23,7 @@ public class RandomImageSound extends JFrame {
         this.soundPath = soundPath;
 
         setUndecorated(true);
-        setAlwaysOnTop(false);
+        setAlwaysOnTop(true);
         setType(Window.Type.UTILITY);
 
         setBackground(new Color(0, 0, 0, 0));
