@@ -1,21 +1,13 @@
 package fr.anthonus;
 
-import fr.anthonus.runs.RandomImageSound;
+import fr.anthonus.randomRuns.runs.*;
 
-import java.util.Random;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        Random rand = new Random();
-        while (true) {
-            int randInt = rand.nextInt(60000, 120000);
-            System.out.println("Waiting for " + randInt/1000 + "s");
-            Thread.sleep(randInt);
-            System.out.println("Creating new image and sound");
-            switch (rand.nextInt(2)){
-                case 0 -> new RandomImageSound("/fr/anthonus/images/goku.png", "/fr/anthonus/audio/goku.wav");
-                case 1 -> new RandomImageSound("/fr/anthonus/images/gyatt.png", "/fr/anthonus/audio/gyatt.wav");
-            }
-        }
+    public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        new GokuRun();
     }
 }
