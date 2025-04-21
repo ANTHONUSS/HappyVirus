@@ -45,13 +45,14 @@ public class Main {
                     return;
                 }
 
-                int randomRunType = rand.nextInt(5);
+                int randomRunType = rand.nextInt(6);
                 switch (randomRunType) {
                     case 0 -> new GokuRun();
                     case 1 -> new OmniManRun();
                     case 2 -> new RatRun();
                     case 3 -> new AmogusRun();
                     case 4 -> new MikuRun();
+                    case 5 -> new MikuRun();
                 }
             }
         });
@@ -87,6 +88,11 @@ public class Main {
         MenuItem mikuRunItem = new MenuItem("MikuRun");
         mikuRunItem.addActionListener(e -> new MikuRun());
         runMenu.add(mikuRunItem);
+
+        // Ajout de l'item pour le AreYouSureRun
+        MenuItem areYouSureRunItem = new MenuItem("AreYouSureRun");
+        areYouSureRunItem.addActionListener(e -> new AreYouSureRun());
+        runMenu.add(areYouSureRunItem);
 
         // Ajout du menu au popup
         popup.add(runMenu);
