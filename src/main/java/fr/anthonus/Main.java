@@ -52,7 +52,7 @@ public class Main {
                     case 2 -> new RatRun();
                     case 3 -> new AmogusRun();
                     case 4 -> new MikuRun();
-                    case 5 -> new MikuRun();
+                    case 5 -> new AreYouSureRun();
                 }
             }
         });
