@@ -34,7 +34,7 @@ public class GokuRun extends RandomRun {
         ThreadLocalRandom rand = ThreadLocalRandom.current();
         Media tpMedia;
         try {
-            tpMedia = new Media(getClass().getResource("/audio/goku/gokuTP.wav").toURI().toString());
+            tpMedia = new Media(getClass().getResource("/runAssets/goku/gokuTP.wav").toURI().toString());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

@@ -152,7 +152,7 @@ public class Main extends Application {
         exitItem.addActionListener(e -> System.exit(0));
         popup.add(exitItem);
 
-        Image icon = Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/omniMan/omniMan.png"));
+        Image icon = Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/runAssets/omniMan/omniMan.png"));
         TrayIcon trayIcon = new TrayIcon(icon, "HappyVirus", popup);
         trayIcon.setImageAutoSize(true);
 
@@ -179,8 +179,8 @@ public class Main extends Application {
                     double newRandomSize = rand.nextDouble(150, 200);
                     new OmniManRun(
                             root,
-                            "/images/omniMan/omniMan.png",
-                            "/audio/omniMan/omniMan.wav",
+                            "/runAssets/omniMan/omniMan.png",
+                            "/runAssets/omniMan/omniMan.wav",
                             randomX,
                             randomY,
                             newRandomSize,
@@ -191,8 +191,8 @@ public class Main extends Application {
                 case 1 -> {
                     new GokuRun(
                             root,
-                            "/images/goku/goku.png",
-                            "/audio/goku/goku.wav",
+                            "/runAssets/goku/goku.png",
+                            "/runAssets/goku/goku.wav",
                             randomX,
                             randomY,
                             randomSize,
@@ -203,8 +203,8 @@ public class Main extends Application {
                 case 2 -> {
                     new RatRun(
                             root,
-                            "/images/rat-dance/rat-dance.gif",
-                            "/audio/rat-dance/rat-dance.wav",
+                            "/runAssets/rat-dance/rat-dance.gif",
+                            "/runAssets/rat-dance/rat-dance.wav",
                             randomX,
                             randomY,
                             randomSize,
@@ -215,8 +215,8 @@ public class Main extends Application {
                 case 3 -> {
                     new AmogusRun(
                             root,
-                            "/images/amogus/amogus.png",
-                            "/audio/amogus/amogus.wav",
+                            "/runAssets/amogus/amogus.png",
+                            "/runAssets/amogus/amogus.wav",
                             randomX,
                             screenHeight,
                             randomSize,
