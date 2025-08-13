@@ -1,5 +1,6 @@
 package fr.anthonus.utils;
 
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -37,6 +38,7 @@ public class Utils {
 
         imageView.setLayoutX(x);
         imageView.setLayoutY(y);
+        imageView.setCursor(Cursor.HAND);
 
         imageView.setPickOnBounds(true);
 
