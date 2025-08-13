@@ -49,6 +49,8 @@ public class GokuRun extends RandomRun {
 
             imageView.setLayoutX(randomX);
             imageView.setLayoutY(randomY);
+            imageX=randomX;
+            imageY=randomY;
 
             MediaPlayer tpPlayer = new MediaPlayer(tpMedia);
             tpPlayer.setVolume(0.3);
@@ -59,12 +61,7 @@ public class GokuRun extends RandomRun {
             tpLeft[0]--;
         });
 
-        imageView.setOnMousePressed(_ -> {
-            // Arrêter le son
-            players.forEach(MediaPlayer::stop);
-            // Supprimer l'image
-            root.getChildren().remove(imageView);
-        });
+        addDeleteListener();
 
         MediaPlayer player = players.getFirst();
         imageView.setOpacity(0.0);

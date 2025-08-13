@@ -2,6 +2,7 @@ package fr.anthonus;
 
 import fr.anthonus.randomRun.GokuRun;
 import fr.anthonus.randomRun.OmniManRun;
+import fr.anthonus.randomRun.RatRun;
 import fr.anthonus.utils.Utils;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -99,12 +100,11 @@ public class Main extends Application {
         MenuItem gokuRunItem = new MenuItem("GokuRun");
         gokuRunItem.addActionListener(e ->  createRun(1));
         runMenu.add(gokuRunItem);
-//
-//
-//        // Ajout de l'item pour le RatRun
-//        MenuItem ratRunItem = new MenuItem("RatRun");
-//        ratRunItem.addActionListener(e -> new RatRun());
-//        runMenu.add(ratRunItem);
+
+        // Ajout de l'item pour le RatRun
+        MenuItem ratRunItem = new MenuItem("RatRun");
+        ratRunItem.addActionListener(e -> createRun(2));
+        runMenu.add(ratRunItem);
 //
 //        // Ajout de l'item pour le AmogusRun
 //        MenuItem amogusRunItem = new MenuItem("AmogusRun");
@@ -127,7 +127,7 @@ public class Main extends Application {
         // Ajout de l'état d'activation
         CheckboxMenuItem checkbox = new CheckboxMenuItem("Activé");
         checkbox.setState(true);
-        checkbox.addItemListener(e -> {
+        checkbox.addItemListener(_ -> {
             if (checkbox.getState()) {
                 activated = true;
                 whileTrue();
@@ -164,7 +164,7 @@ public class Main extends Application {
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
 
-        double randomSize = rand.nextDouble(150, 200);
+        double randomSize = rand.nextDouble(150, 250);
 
         double randomX = rand.nextDouble(0, screenWidth-randomSize);
         double randomY = rand.nextDouble(0, screenHeight-randomSize);
@@ -173,28 +173,40 @@ public class Main extends Application {
         Platform.runLater(() -> {
             switch (type) {
                 case 0 -> {
+                    double newRandomSize = rand.nextDouble(150, 200);
                     new OmniManRun(
                             root,
                             "/images/omniMan/omniMan.png",
                             "/audio/omniMan/omniMan.wav",
                             randomX,
                             randomY,
-                            randomSize,
-                            randomSize,
+                            newRandomSize,
+                            newRandomSize,
                             0.05
                     ).run();
                 }
                 case 1 -> {
-                    double newRandomSize = rand.nextDouble(150, 250);
                     new GokuRun(
                             root,
                             "/images/goku/goku.png",
                             "/audio/goku/goku.wav",
                             randomX,
                             randomY,
-                            newRandomSize,
-                            newRandomSize,
+                            randomSize,
+                            randomSize,
                             0
+                    ).run();
+                }
+                case 2 -> {
+                    new RatRun(
+                            root,
+                            "/images/rat-dance/rat-dance.gif",
+                            "/audio/rat-dance/rat-dance.wav",
+                            randomX,
+                            randomY,
+                            randomSize,
+                            randomSize,
+                            1
                     ).run();
                 }
             }

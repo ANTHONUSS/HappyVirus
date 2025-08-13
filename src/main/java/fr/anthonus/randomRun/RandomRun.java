@@ -48,4 +48,11 @@ public abstract class RandomRun {
     }
 
     public abstract void run();
+
+    protected void addDeleteListener() {
+        imageView.setOnMousePressed(_ -> {
+            players.forEach(MediaPlayer::stop);
+            root.getChildren().remove(imageView);
+        });
+    }
 }

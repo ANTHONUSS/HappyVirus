@@ -20,13 +20,7 @@ public class OmniManRun extends RandomRun {
 
     @Override
     public void run() {
-        //exemple d'image avec listener
-        imageView.setOnMousePressed(_ -> {
-            // Arrêter le son
-            players.forEach(MediaPlayer::stop);
-            // Supprimer l'image
-            root.getChildren().remove(imageView);
-        });
+        addDeleteListener();
 
         root.getChildren().add(imageView);
         MediaPlayer player = players.getFirst();
