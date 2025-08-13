@@ -1,14 +1,13 @@
 package fr.anthonus;
 
+import fr.anthonus.randomRun.AmogusRun;
 import fr.anthonus.randomRun.GokuRun;
 import fr.anthonus.randomRun.OmniManRun;
 import fr.anthonus.randomRun.RatRun;
-import fr.anthonus.utils.Utils;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -49,11 +48,15 @@ public class Main extends Application {
         stage.setScene(scene);
 
         stage.show();
+
+        try {
+            createPopupMenu();
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static void main(String[] args) throws AWTException {
-        createPopupMenu();
-
+    public static void main(String[] args) {
         whileTrue();
 
         launch(args);
@@ -105,11 +108,11 @@ public class Main extends Application {
         MenuItem ratRunItem = new MenuItem("RatRun");
         ratRunItem.addActionListener(e -> createRun(2));
         runMenu.add(ratRunItem);
-//
-//        // Ajout de l'item pour le AmogusRun
-//        MenuItem amogusRunItem = new MenuItem("AmogusRun");
-//        amogusRunItem.addActionListener(e -> new AmogusRun());
-//        runMenu.add(amogusRunItem);
+
+        // Ajout de l'item pour le AmogusRun
+        MenuItem amogusRunItem = new MenuItem("AmogusRun");
+        amogusRunItem.addActionListener(e -> createRun(3));
+        runMenu.add(amogusRunItem);
 //
 //        // Ajout de l'item pour le MikuRun
 //        MenuItem mikuRunItem = new MenuItem("MikuRun");
@@ -204,6 +207,18 @@ public class Main extends Application {
                             "/audio/rat-dance/rat-dance.wav",
                             randomX,
                             randomY,
+                            randomSize,
+                            randomSize,
+                            1
+                    ).run();
+                }
+                case 3 -> {
+                    new AmogusRun(
+                            root,
+                            "/images/amogus/amogus.png",
+                            "/audio/amogus/amogus.wav",
+                            randomX,
+                            screenHeight,
                             randomSize,
                             randomSize,
                             1

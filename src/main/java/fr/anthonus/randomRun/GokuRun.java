@@ -39,7 +39,7 @@ public class GokuRun extends RandomRun {
             throw new RuntimeException(e);
         }
 
-        final int[] tpLeft = {rand.nextInt(8, 15)}; //pour qu'il soit final
+        final int[] tpLeft = {rand.nextInt(10, 20)}; //tableau pour qu'il soit final pour fonctionner dans le listener
 
         imageView.setOnMouseEntered(_ -> {
             if (tpLeft[0] < 0) return;
@@ -53,7 +53,7 @@ public class GokuRun extends RandomRun {
             imageY=randomY;
 
             MediaPlayer tpPlayer = new MediaPlayer(tpMedia);
-            tpPlayer.setVolume(0.3);
+            tpPlayer.setVolume(0.2);
             players.add(tpPlayer);
             tpPlayer.play();
             tpPlayer.setOnEndOfMedia(tpPlayer::dispose);
@@ -67,8 +67,8 @@ public class GokuRun extends RandomRun {
         imageView.setOpacity(0.0);
         player.setVolume(0.0);
 
-        player.setOnReady(() -> {
-            player.seek(Duration.seconds(50)); // maintenant ça fonctionne
+        player.setOnReady(() -> { //besoin pour la setDuration
+            player.seek(Duration.seconds(50));
             player.play();
 
             Timeline fadeIn = new Timeline(

@@ -1,0 +1,54 @@
+package fr.anthonus.randomRun;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.Screen;
+import javafx.util.Duration;
+
+public class AmogusRun extends RandomRun {
+
+    public AmogusRun(Pane root, String imagePath, String soundPath, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) {
+        super(
+                root,
+                imagePath,
+                soundPath,
+                imageX,
+                imageY,
+                imageWitdh,
+                imageHeight,
+                imageOpacity
+        );
+    }
+
+    @Override
+    public void run() {
+        addDeleteListener();
+        double screenHeight = Screen.getPrimary().getBounds().getHeight();
+
+        Timeline showUp = new Timeline(
+                new KeyFrame(Duration.seconds(0)),
+                new KeyFrame(Duration.seconds(50),
+                        new KeyValue(imageView.layoutYProperty(), screenHeight - imageHeight - 10)
+                )
+        );
+        showUp.play();
+
+        MediaPlayer player = players.getFirst();
+        player.setVolume(0);
+        player.play();
+
+        Timeline volumeUp = new Timeline(
+                new KeyFrame(Duration.seconds(1)),
+                new KeyFrame(Duration.seconds(5),
+                        new KeyValue(player.volumeProperty(), maxVolume)
+                )
+        );
+        volumeUp.play();
+
+        root.getChildren().add(imageView);
+
+    }
+}
