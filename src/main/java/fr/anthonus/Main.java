@@ -1,5 +1,6 @@
 package fr.anthonus;
 
+import fr.anthonus.randomRun.GokuRun;
 import fr.anthonus.randomRun.OmniManRun;
 import fr.anthonus.utils.Utils;
 import javafx.application.Application;
@@ -76,7 +77,7 @@ public class Main extends Application {
                     return;
                 }
 
-                createRun(rand.nextInt(1));
+                createRun(rand.nextInt(2));
             }
         });
 
@@ -94,10 +95,10 @@ public class Main extends Application {
         omniManRun.addActionListener(e -> createRun(0));
         runMenu.add(omniManRun);
 
-//        // Ajout de l'item pour le GokuRun
-//        MenuItem gokuRunItem = new MenuItem("GokuRun");
-//        gokuRunItem.addActionListener(e ->  new GokuRun());
-//        runMenu.add(gokuRunItem);
+        // Ajout de l'item pour le GokuRun
+        MenuItem gokuRunItem = new MenuItem("GokuRun");
+        gokuRunItem.addActionListener(e ->  createRun(1));
+        runMenu.add(gokuRunItem);
 //
 //
 //        // Ajout de l'item pour le RatRun
@@ -162,10 +163,12 @@ public class Main extends Application {
 
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
-        double randomX = rand.nextDouble(0, screenWidth);
-        double randomY = rand.nextDouble(0, screenHeight);
 
-        double randomSize = rand.nextDouble(100, 200);
+        double randomSize = rand.nextDouble(150, 200);
+
+        double randomX = rand.nextDouble(0, screenWidth-randomSize);
+        double randomY = rand.nextDouble(0, screenHeight-randomSize);
+
 
         Platform.runLater(() -> {
             switch (type) {
@@ -179,6 +182,19 @@ public class Main extends Application {
                             randomSize,
                             randomSize,
                             0.05
+                    ).run();
+                }
+                case 1 -> {
+                    double newRandomSize = rand.nextDouble(150, 250);
+                    new GokuRun(
+                            root,
+                            "/images/goku/goku.png",
+                            "/audio/goku/goku.wav",
+                            randomX,
+                            randomY,
+                            newRandomSize,
+                            newRandomSize,
+                            0
                     ).run();
                 }
             }
