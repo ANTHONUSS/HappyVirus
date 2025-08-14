@@ -50,9 +50,11 @@ public class RatRun extends RandomRun {
         bpmTimer.setCycleCount(Timeline.INDEFINITE);
         bpmTimer.setDelay(Duration.seconds(offsetSeconds));
 
-        root.getChildren().add(imageView);
         MediaPlayer player = players.getFirst();
+        player.setCycleCount(MediaPlayer.INDEFINITE);
+        player.setVolume(maxVolume);
 
+        root.getChildren().add(imageView);
         bpmTimer.play();
         player.play();
     }

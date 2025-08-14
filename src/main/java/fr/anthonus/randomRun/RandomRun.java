@@ -37,15 +37,7 @@ public abstract class RandomRun {
 
         imageView = Utils.createImage(imagePath, imageX, imageY, imageWitdh, imageHeight, imageOpacity);
 
-        Media media;
-        try {
-            media = new Media(Utils.class.getResource(soundPath).toURI().toString());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        MediaPlayer player = new MediaPlayer(media);
-        player.setVolume(maxVolume);
-        player.setCycleCount(MediaPlayer.INDEFINITE);
+        MediaPlayer player = Utils.createMediaPlayer(soundPath);
         players.add(player);
     }
 

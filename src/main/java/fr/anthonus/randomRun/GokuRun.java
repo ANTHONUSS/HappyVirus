@@ -1,18 +1,18 @@
 package fr.anthonus.randomRun;
 
+import fr.anthonus.utils.Utils;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 
-import java.net.URISyntaxException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GokuRun extends RandomRun {
+    private static final String tpSound = "/runAssets/goku/gokuTP.wav";
 
     public GokuRun(Pane root, String imagePath, String soundPath, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) {
         super(
@@ -32,12 +32,6 @@ public class GokuRun extends RandomRun {
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
         ThreadLocalRandom rand = ThreadLocalRandom.current();
-        Media tpMedia;
-        try {
-            tpMedia = new Media(getClass().getResource("/runAssets/goku/gokuTP.wav").toURI().toString());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
 
         final int[] tpLeft = {rand.nextInt(10, 20)}; //tableau pour qu'il soit final pour fonctionner dans le listener
 
@@ -52,7 +46,7 @@ public class GokuRun extends RandomRun {
             imageX=randomX;
             imageY=randomY;
 
-            MediaPlayer tpPlayer = new MediaPlayer(tpMedia);
+            MediaPlayer tpPlayer = Utils.createMediaPlayer(tpSound);
             tpPlayer.setVolume(0.2);
             players.add(tpPlayer);
             tpPlayer.play();
@@ -64,12 +58,12 @@ public class GokuRun extends RandomRun {
         addDeleteListener();
 
         MediaPlayer player = players.getFirst();
-        imageView.setOpacity(0.0);
-        player.setVolume(0.0);
+        player.setCycleCount(MediaPlayer.INDEFINITE);
+        imageView.setOpacity(0);
+        player.setVolume(0);
 
         player.setOnReady(() -> { //besoin pour la setDuration
             player.seek(Duration.seconds(50));
-            player.play();
 
             Timeline fadeIn = new Timeline(
                     new KeyFrame(Duration.seconds(0),
@@ -83,9 +77,10 @@ public class GokuRun extends RandomRun {
             );
 
             fadeIn.setOnFinished(_ -> player.setCycleCount(MediaPlayer.INDEFINITE));
-            fadeIn.play();
-        });
 
-        root.getChildren().add(imageView);
+            root.getChildren().add(imageView);
+            fadeIn.play();
+            player.play();
+        });
     }
 }

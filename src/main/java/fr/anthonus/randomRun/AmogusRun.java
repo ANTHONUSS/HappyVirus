@@ -34,21 +34,13 @@ public class AmogusRun extends RandomRun {
                         new KeyValue(imageView.layoutYProperty(), screenHeight - imageHeight - 10)
                 )
         );
-        showUp.play();
 
         MediaPlayer player = players.getFirst();
-        player.setVolume(0);
-        player.play();
-
-        Timeline volumeUp = new Timeline(
-                new KeyFrame(Duration.seconds(1)),
-                new KeyFrame(Duration.seconds(5),
-                        new KeyValue(player.volumeProperty(), maxVolume)
-                )
-        );
-        volumeUp.play();
+        player.setCycleCount(Timeline.INDEFINITE);
+        player.setVolume(maxVolume);
 
         root.getChildren().add(imageView);
-
+        showUp.play();
+        player.play();
     }
 }

@@ -3,6 +3,8 @@ package fr.anthonus.utils;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 import java.net.URL;
@@ -43,5 +45,25 @@ public class Utils {
         imageView.setPickOnBounds(true);
 
         return imageView;
+    }
+
+    public static MediaPlayer createMediaPlayer(String path) {
+        String url;
+        File f = new File(path);
+        if (f.exists()) {
+            url = f.toURI().toString();
+        } else {
+            URL res = Utils.class.getResource(path.startsWith("/") ? path : "/" + path);
+            if (res != null) {
+                url = res.toExternalForm();
+            } else {
+                throw new IllegalArgumentException("Son non trouvée : " + path);
+            }
+        }
+
+        Media media = new Media(url);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+        return mediaPlayer;
     }
 }

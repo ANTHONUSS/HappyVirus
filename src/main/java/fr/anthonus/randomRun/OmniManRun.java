@@ -22,9 +22,11 @@ public class OmniManRun extends RandomRun {
     public void run() {
         addDeleteListener();
 
-        root.getChildren().add(imageView);
         MediaPlayer player = players.getFirst();
-        player.play();
+        player.setCycleCount(MediaPlayer.INDEFINITE);
+        player.setVolume(maxVolume);
 
+        root.getChildren().add(imageView);
+        player.play();
     }
 }
