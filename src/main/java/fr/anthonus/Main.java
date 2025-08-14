@@ -16,7 +16,10 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -25,8 +28,9 @@ public class Main extends Application {
     public static boolean activated = true;
     public static boolean blocked = false;
     public static Thread whileTrueThread;
+    private static int probabilite = 5;
     private static Pane root;
-    
+
     public static final List<RandomRun> activeRuns = new ArrayList<>();
 
     @Override
@@ -74,12 +78,20 @@ public class Main extends Application {
             ThreadLocalRandom rand = ThreadLocalRandom.current();
 
             while (true) {
-                if (!activated || blocked) continue;
+                if (!activated || blocked) {
+                    System.out.println("bloqué");
+                    try {
+                        Thread.sleep(1_000);
+                    } catch (InterruptedException _) {
+                        return;
+                    }
+                    continue;
+                }
 
                 double randomChance = rand.nextDouble(0, 100);
 
                 System.out.println("Random chance: " + randomChance + "%");
-                if (randomChance < 5) createRandomRun(rand.nextInt(0, 5));
+                if (randomChance < probabilite) createRandomRun(rand.nextInt(0, 5));
 
                 try {
                     Thread.sleep(1_000);
@@ -118,6 +130,45 @@ public class Main extends Application {
             }
         });
         popup.add(checkbox);
+
+        MenuItem probabilityItem = new MenuItem("Changer la probabilité...");
+        probabilityItem.addActionListener(action -> {
+            // Fenêtre centrée
+            JDialog dialog = new JDialog((Frame) null, "Définir la probabilité", true);
+            dialog.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(5, 5, 5, 5);
+
+            // Spinner : valeur de 1 à 100
+            SpinnerNumberModel model = new SpinnerNumberModel(probabilite, 1, 100, 1);
+            JSpinner spinner = new JSpinner(model);
+
+            // Bouton OK
+            JButton okButton = new JButton("OK");
+            okButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    probabilite = (Integer) spinner.getValue();
+                    System.out.println("Nouvelle probabilité : " + probabilite + "%");
+                    dialog.dispose();
+                }
+            });
+
+            // Placement dans la fenêtre
+            gbc.gridx = 0; gbc.gridy = 0;
+            dialog.add(new JLabel("Probabilité (1-100) :"), gbc);
+            gbc.gridx = 1;
+            dialog.add(spinner, gbc);
+
+            gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2;
+            dialog.add(okButton, gbc);
+
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+        });
+        popup.add(probabilityItem);
 
         popup.addSeparator();
 
@@ -254,9 +305,7 @@ public class Main extends Application {
                     tenna.run();
                     activeRuns.add(tenna);
                 }
-
             }
-
         });
     }
 
