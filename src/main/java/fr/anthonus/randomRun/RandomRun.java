@@ -25,6 +25,8 @@ public abstract class RandomRun {
 
     protected final List<MediaPlayer> players = new ArrayList<>();
 
+    protected boolean finished = false;
+
     public RandomRun(Pane root, String imagePath, String soundPath, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) {
         this.root = root;
         this.imageX = imageX;
@@ -53,6 +55,7 @@ public abstract class RandomRun {
         imageView.setOnMousePressed(_ -> {
             players.forEach(MediaPlayer::stop);
             root.getChildren().remove(imageView);
+            finished = true;
         });
     }
 }

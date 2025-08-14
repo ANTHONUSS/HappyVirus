@@ -1,9 +1,7 @@
 package fr.anthonus;
 
-import fr.anthonus.randomRun.AmogusRun;
-import fr.anthonus.randomRun.GokuRun;
-import fr.anthonus.randomRun.OmniManRun;
-import fr.anthonus.randomRun.RatRun;
+import fr.anthonus.randomRun.*;
+import fr.anthonus.randomRun.tenna.TennaRun;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -15,11 +13,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.awt.*;
+import java.net.URISyntaxException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main extends Application {
-    private static boolean activated = true;
-    private static Thread whileTrueThread;
+    public static boolean activated = true;
+    public static Thread whileTrueThread;
     private static Pane root;
 
     @Override
@@ -62,7 +61,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    private static void whileTrue() {
+    public static void whileTrue() {
         whileTrueThread = new Thread(() -> {
             ThreadLocalRandom rand = ThreadLocalRandom.current();
 
@@ -95,34 +94,29 @@ public class Main extends Application {
         Menu runMenu = new Menu("Lancer un run");
 
         // Ajout de l'item pour le OmniManRun
-        MenuItem omniManRun = new MenuItem("OmniManRun");
+        MenuItem omniManRun = new MenuItem("Omni Man");
         omniManRun.addActionListener(e -> createRun(0));
         runMenu.add(omniManRun);
 
         // Ajout de l'item pour le GokuRun
-        MenuItem gokuRunItem = new MenuItem("GokuRun");
+        MenuItem gokuRunItem = new MenuItem("Goku");
         gokuRunItem.addActionListener(e ->  createRun(1));
         runMenu.add(gokuRunItem);
 
         // Ajout de l'item pour le RatRun
-        MenuItem ratRunItem = new MenuItem("RatRun");
+        MenuItem ratRunItem = new MenuItem("Rat");
         ratRunItem.addActionListener(e -> createRun(2));
         runMenu.add(ratRunItem);
 
         // Ajout de l'item pour le AmogusRun
-        MenuItem amogusRunItem = new MenuItem("AmogusRun");
+        MenuItem amogusRunItem = new MenuItem("Amogus");
         amogusRunItem.addActionListener(e -> createRun(3));
         runMenu.add(amogusRunItem);
-//
-//        // Ajout de l'item pour le MikuRun
-//        MenuItem mikuRunItem = new MenuItem("MikuRun");
-//        mikuRunItem.addActionListener(e -> new MikuRun());
-//        runMenu.add(mikuRunItem);
-//
-//        // Ajout de l'item pour le AreYouSureRun
-//        MenuItem areYouSureRunItem = new MenuItem("AreYouSureRun");
-//        areYouSureRunItem.addActionListener(e -> new AreYouSureRun());
-//        runMenu.add(areYouSureRunItem);
+
+        // Ajout de l'item pour le TennaRun
+        MenuItem tennaRunItem = new MenuItem("Tenna");
+        tennaRunItem.addActionListener(e -> createRun(4));
+        runMenu.add(tennaRunItem);
 
         // Ajout du menu au popup
         popup.add(runMenu);
@@ -223,6 +217,22 @@ public class Main extends Application {
                             randomSize,
                             1
                     ).run();
+                }
+                case 4 -> {
+                    try {
+                        new TennaRun(
+                                root,
+                                "/runAssets/tenna/tennaRun.gif",
+                                "/runAssets/tenna/running.wav",
+                                randomX,
+                                randomY,
+                                0,
+                                0,
+                                1
+                        ).run();
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
