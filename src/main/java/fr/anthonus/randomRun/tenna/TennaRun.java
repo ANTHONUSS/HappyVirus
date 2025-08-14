@@ -25,7 +25,6 @@ public class TennaRun extends RandomRun {
     private final List<Tenna> tennas = new ArrayList<>();
 
     private static final String tvTimeSong = "/runAssets/tenna/tvTime.mp3";
-    private static final String platSound = "/runAssets/tenna/plat.mp3";
 
 
     public TennaRun(Pane root, String imagePath, String soundPath, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) throws URISyntaxException {
@@ -69,6 +68,9 @@ public class TennaRun extends RandomRun {
 
         appear.setOnFinished(_ -> {
             if (!finished) {
+                players.getFirst().stop();
+                players.removeFirst();
+
                 root.getChildren().remove(imageView);
 
                 Main.activated = false;
@@ -111,10 +113,11 @@ public class TennaRun extends RandomRun {
         tennas.add(new Tenna(correctTennaImage));
 
         tennas.getFirst().setOnMousePressed(_ -> {
+            players.getFirst().stop();
+            players.removeFirst();
+
             Main.activated = true;
             Main.whileTrue();
-
-            players.forEach(MediaPlayer::stop);
             root.getChildren().removeAll(tennas);
         });
 
@@ -134,9 +137,7 @@ public class TennaRun extends RandomRun {
 
         Timeline moveTimeline = new Timeline(
                 new KeyFrame(Duration.millis(16), e -> {
-                    for (int i = 0; i < tennas.size(); i++) {
-                        Tenna tenna = tennas.get(i);
-
+                    for (Tenna tenna : tennas) {
                         double x = tenna.getLayoutX() + tenna.speed;
                         double y = tenna.baseY + tenna.amplitude * Math.sin(tenna.frequency * x + tenna.phase);
                         if (tenna.getLayoutX() > screenWidth) {

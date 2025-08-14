@@ -2,11 +2,13 @@ package fr.anthonus;
 
 import fr.anthonus.randomRun.*;
 import fr.anthonus.randomRun.tenna.TennaRun;
+import fr.anthonus.utils.Utils;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
