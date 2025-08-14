@@ -1,5 +1,6 @@
 package fr.anthonus;
 
+import fr.anthonus.randomRun.RandomRun;
 import fr.anthonus.randomRun.runs.amogus.AmogusRun;
 import fr.anthonus.randomRun.runs.goku.GokuRun;
 import fr.anthonus.randomRun.runs.omniMan.OmniManRun;
@@ -16,7 +17,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.awt.*;
-import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main extends Application {
@@ -24,6 +26,8 @@ public class Main extends Application {
     public static boolean blocked = false;
     public static Thread whileTrueThread;
     private static Pane root;
+    
+    public static final List<RandomRun> activeRuns = new ArrayList<>();
 
     @Override
     public void start(Stage ignored) {
@@ -70,21 +74,18 @@ public class Main extends Application {
             ThreadLocalRandom rand = ThreadLocalRandom.current();
 
             while (true) {
-                if (!activated || blocked) {
-                    return;
-                }
-                int randomTime = rand.nextInt(30_000, 180_000); // temps aléatoire entre 30 secondes et 3 minutes
-                int totalSeconds = randomTime / 1000;
-                int minutes = totalSeconds / 60;
-                int seconds = totalSeconds % 60;
-                System.out.println("Next run in " + minutes + " minutes and " + seconds + " seconds");
+                if (!activated || blocked) continue;
+
+                double randomChance = rand.nextDouble(0, 100);
+
+                System.out.println("Random chance: " + randomChance + "%");
+                if (randomChance < 5) createRandomRun(rand.nextInt(0, 5));
+
                 try {
-                    Thread.sleep(randomTime);
+                    Thread.sleep(1_000);
                 } catch (InterruptedException _) {
                     return;
                 }
-
-                createRun(rand.nextInt(2));
             }
         });
 
@@ -95,32 +96,7 @@ public class Main extends Application {
         PopupMenu popup = new PopupMenu();
 
         // Ajout du menu pour forcer l'apparition des items
-        Menu runMenu = new Menu("Lancer un run");
-
-        // Ajout de l'item pour le OmniManRun
-        MenuItem omniManRun = new MenuItem("Omni Man");
-        omniManRun.addActionListener(e -> createRun(0));
-        runMenu.add(omniManRun);
-
-        // Ajout de l'item pour le GokuRun
-        MenuItem gokuRunItem = new MenuItem("Goku");
-        gokuRunItem.addActionListener(e ->  createRun(1));
-        runMenu.add(gokuRunItem);
-
-        // Ajout de l'item pour le RatRun
-        MenuItem ratRunItem = new MenuItem("Rat");
-        ratRunItem.addActionListener(e -> createRun(2));
-        runMenu.add(ratRunItem);
-
-        // Ajout de l'item pour le AmogusRun
-        MenuItem amogusRunItem = new MenuItem("Amogus");
-        amogusRunItem.addActionListener(e -> createRun(3));
-        runMenu.add(amogusRunItem);
-
-        // Ajout de l'item pour le TennaRun
-        MenuItem tennaRunItem = new MenuItem("Tenna");
-        tennaRunItem.addActionListener(e -> createRun(4));
-        runMenu.add(tennaRunItem);
+        Menu runMenu = getRunMenu();
 
         // Ajout du menu au popup
         popup.add(runMenu);
@@ -159,7 +135,39 @@ public class Main extends Application {
         tray.add(trayIcon);
     }
 
-    private static void createRun(int type) {
+    private static Menu getRunMenu() {
+        Menu runMenu = new Menu("Lancer un run");
+
+        // Ajout de l'item pour le OmniManRun
+        MenuItem omniManRun = new MenuItem("Omni Man");
+        runMenu.add(omniManRun);
+
+        // Ajout de l'item pour le GokuRun
+        MenuItem gokuRunItem = new MenuItem("Goku");
+        runMenu.add(gokuRunItem);
+
+        // Ajout de l'item pour le RatRun
+        MenuItem ratRunItem = new MenuItem("Rat");
+        runMenu.add(ratRunItem);
+
+        // Ajout de l'item pour le AmogusRun
+        MenuItem amogusRunItem = new MenuItem("Amogus");
+        runMenu.add(amogusRunItem);
+
+        // Ajout de l'item pour le TennaRun
+        MenuItem tennaRunItem = new MenuItem("Tenna");
+        runMenu.add(tennaRunItem);
+
+        // ajout des listeners aux items
+        for (int i = 0; i < runMenu.getItemCount(); i++) {
+            final int type = i;
+            runMenu.getItem(i).addActionListener(_ -> createRandomRun(type));
+        }
+
+        return runMenu;
+    }
+
+    private static void createRandomRun(int type) {
         if (blocked) return;
 
         ThreadLocalRandom rand = ThreadLocalRandom.current();
@@ -168,16 +176,14 @@ public class Main extends Application {
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
 
         double randomSize = rand.nextDouble(150, 250);
-
-        double randomX = rand.nextDouble(0, screenWidth-randomSize);
-        double randomY = rand.nextDouble(0, screenHeight-randomSize);
-
+        double randomX = rand.nextDouble(0, screenWidth - randomSize);
+        double randomY = rand.nextDouble(0, screenHeight - randomSize);
 
         Platform.runLater(() -> {
             switch (type) {
                 case 0 -> {
                     double newRandomSize = rand.nextDouble(150, 200);
-                    new OmniManRun(
+                    OmniManRun omniman = new OmniManRun(
                             root,
                             "/runAssets/omniMan/omniMan.png",
                             "/runAssets/omniMan/omniMan.wav",
@@ -186,10 +192,12 @@ public class Main extends Application {
                             newRandomSize,
                             newRandomSize,
                             0.05
-                    ).run();
+                    );
+                    omniman.run();
+                    activeRuns.add(omniman);
                 }
                 case 1 -> {
-                    new GokuRun(
+                    GokuRun goku = new GokuRun(
                             root,
                             "/runAssets/goku/goku.png",
                             "/runAssets/goku/goku.wav",
@@ -198,10 +206,12 @@ public class Main extends Application {
                             randomSize,
                             randomSize,
                             0
-                    ).run();
+                    );
+                    goku.run();
+                    activeRuns.add(goku);
                 }
                 case 2 -> {
-                    new RatRun(
+                    RatRun rat = new RatRun(
                             root,
                             "/runAssets/rat-dance/rat-dance.gif",
                             "/runAssets/rat-dance/rat-dance.wav",
@@ -210,10 +220,12 @@ public class Main extends Application {
                             randomSize,
                             randomSize,
                             1
-                    ).run();
+                    );
+                    rat.run();
+                    activeRuns.add(rat);
                 }
                 case 3 -> {
-                    new AmogusRun(
+                    AmogusRun amogus = new AmogusRun(
                             root,
                             "/runAssets/amogus/amogus.png",
                             "/runAssets/amogus/amogus.wav",
@@ -222,25 +234,29 @@ public class Main extends Application {
                             randomSize,
                             randomSize,
                             1
-                    ).run();
+                    );
+                    amogus.run();
+                    activeRuns.add(amogus);
                 }
                 case 4 -> {
-                    try {
-                        new TennaRun(
-                                root,
-                                "/runAssets/tenna/tennaRun.gif",
-                                "/runAssets/tenna/running.wav",
-                                randomX,
-                                randomY,
-                                0,
-                                0,
-                                1
-                        ).run();
-                    } catch (URISyntaxException e) {
-                        throw new RuntimeException(e);
-                    }
+                    if (!activeRuns.isEmpty()) return;
+
+                    TennaRun tenna = new TennaRun(
+                            root,
+                            "/runAssets/tenna/tennaRun.gif",
+                            "/runAssets/tenna/running.wav",
+                            randomX,
+                            randomY,
+                            0,
+                            0,
+                            1
+                    );
+                    tenna.run();
+                    activeRuns.add(tenna);
                 }
+
             }
+
         });
     }
 

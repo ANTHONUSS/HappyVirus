@@ -1,12 +1,11 @@
 package fr.anthonus.randomRun;
 
+import fr.anthonus.Main;
 import fr.anthonus.utils.Utils;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +42,12 @@ public abstract class RandomRun {
 
     public abstract void run();
 
-    protected void addDeleteListener() {
+    protected void addDeleteListener(RandomRun child) {
         imageView.setOnMousePressed(_ -> {
             players.forEach(MediaPlayer::stop);
             root.getChildren().remove(imageView);
             finished = true;
+            Main.activeRuns.remove(child);
         });
     }
 }

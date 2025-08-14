@@ -27,7 +27,7 @@ public class RatRun extends RandomRun {
 
     @Override
     public void run() {
-        addDeleteListener();
+        addDeleteListener(this);
 
         double bpm = 113/4.0;
         double intervalSeconds = 60.0 / bpm;

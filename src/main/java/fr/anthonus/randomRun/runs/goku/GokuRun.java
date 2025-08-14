@@ -56,7 +56,7 @@ public class GokuRun extends RandomRun {
             tpLeft[0]--;
         });
 
-        addDeleteListener();
+        addDeleteListener(this);
 
         MediaPlayer player = players.getFirst();
         player.setCycleCount(MediaPlayer.INDEFINITE);

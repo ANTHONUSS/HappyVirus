@@ -26,7 +26,7 @@ public class AmogusRun extends RandomRun {
 
     @Override
     public void run() {
-        addDeleteListener();
+        addDeleteListener(this);
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
 
         Timeline showUp = new Timeline(

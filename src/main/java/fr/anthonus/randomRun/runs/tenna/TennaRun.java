@@ -27,7 +27,7 @@ public class TennaRun extends RandomRun {
     private static final String tvTimeSong = "/runAssets/tenna/tvTime.mp3";
 
 
-    public TennaRun(Pane root, String imagePath, String soundPath, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) throws URISyntaxException {
+    public TennaRun(Pane root, String imagePath, String soundPath, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) {
         super(
                 root,
                 imagePath,
@@ -40,21 +40,21 @@ public class TennaRun extends RandomRun {
         );
 
         tennaImages = new Image[]{
-                new Image(getClass().getResource("/runAssets/tenna/tennaBend.gif").toURI().toString()),
-                new Image(getClass().getResource("/runAssets/tenna/tennaKick.gif").toURI().toString()),
-                new Image(getClass().getResource("/runAssets/tenna/tennaDance.gif").toURI().toString()),
-                new Image(getClass().getResource("/runAssets/tenna/tennaSpin.gif").toURI().toString()),
-                new Image(getClass().getResource("/runAssets/tenna/tennaCrazy.gif").toURI().toString())
+                new Image(getClass().getResource("/runAssets/tenna/tennaBend.gif").toExternalForm()),
+                new Image(getClass().getResource("/runAssets/tenna/tennaKick.gif").toExternalForm()),
+                new Image(getClass().getResource("/runAssets/tenna/tennaDance.gif").toExternalForm()),
+                new Image(getClass().getResource("/runAssets/tenna/tennaSpin.gif").toExternalForm()),
+                new Image(getClass().getResource("/runAssets/tenna/tennaCrazy.gif").toExternalForm())
         };
 
-        correctTennaImage = new Image(getClass().getResource("/runAssets/tenna/tennaCleanDance.gif").toURI().toString());
+        correctTennaImage = new Image(getClass().getResource("/runAssets/tenna/tennaCleanDance.gif").toExternalForm());
 
         Main.blocked = true;
     }
 
     @Override
     public void run() {
-        addDeleteListener();
+        addDeleteListener(this);
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
 
@@ -118,6 +118,7 @@ public class TennaRun extends RandomRun {
 
             Main.blocked = false;
             root.getChildren().removeAll(tennas);
+            Main.activeRuns.remove(this);
         });
 
         for (int i = 0; i < tennaImages.length * 10; i++) {
