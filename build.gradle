@@ -1,5 +1,14 @@
 plugins {
     id 'java'
+    id 'application'
+}
+
+application {
+    mainClass = 'fr.anthonus.Main'
+    applicationDefaultJvmArgs = [
+            "--enable-native-access=javafx.media",
+            "--enable-native-access=javafx.graphics"
+    ]
 }
 
 group = 'fr.anthonus'

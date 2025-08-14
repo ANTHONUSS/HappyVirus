@@ -1,5 +1,6 @@
-package fr.anthonus.randomRun;
+package fr.anthonus.randomRun.runs.omniMan;
 
+import fr.anthonus.randomRun.RandomRun;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 

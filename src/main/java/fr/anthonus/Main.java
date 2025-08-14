@@ -1,14 +1,15 @@
 package fr.anthonus;
 
-import fr.anthonus.randomRun.*;
-import fr.anthonus.randomRun.tenna.TennaRun;
-import fr.anthonus.utils.Utils;
+import fr.anthonus.randomRun.runs.amogus.AmogusRun;
+import fr.anthonus.randomRun.runs.goku.GokuRun;
+import fr.anthonus.randomRun.runs.omniMan.OmniManRun;
+import fr.anthonus.randomRun.runs.rat.RatRun;
+import fr.anthonus.randomRun.runs.tenna.TennaRun;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Main extends Application {
     public static boolean activated = true;
+    public static boolean blocked = false;
     public static Thread whileTrueThread;
     private static Pane root;
 
@@ -68,7 +70,7 @@ public class Main extends Application {
             ThreadLocalRandom rand = ThreadLocalRandom.current();
 
             while (true) {
-                if (!activated) {
+                if (!activated || blocked) {
                     return;
                 }
                 int randomTime = rand.nextInt(30_000, 180_000); // temps aléatoire entre 30 secondes et 3 minutes
@@ -158,6 +160,8 @@ public class Main extends Application {
     }
 
     private static void createRun(int type) {
+        if (blocked) return;
+
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
         double screenWidth = Screen.getPrimary().getBounds().getWidth();

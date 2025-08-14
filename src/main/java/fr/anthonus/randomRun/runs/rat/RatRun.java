@@ -1,5 +1,6 @@
-package fr.anthonus.randomRun;
+package fr.anthonus.randomRun.runs.rat;
 
+import fr.anthonus.randomRun.RandomRun;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;

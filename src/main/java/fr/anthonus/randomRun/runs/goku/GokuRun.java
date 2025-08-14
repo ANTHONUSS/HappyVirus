@@ -1,5 +1,6 @@
-package fr.anthonus.randomRun;
+package fr.anthonus.randomRun.runs.goku;
 
+import fr.anthonus.randomRun.RandomRun;
 import fr.anthonus.utils.Utils;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

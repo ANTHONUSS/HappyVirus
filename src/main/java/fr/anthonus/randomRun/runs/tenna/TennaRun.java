@@ -1,4 +1,4 @@
-package fr.anthonus.randomRun.tenna;
+package fr.anthonus.randomRun.runs.tenna;
 
 import fr.anthonus.Main;
 import fr.anthonus.randomRun.RandomRun;
@@ -48,6 +48,8 @@ public class TennaRun extends RandomRun {
         };
 
         correctTennaImage = new Image(getClass().getResource("/runAssets/tenna/tennaCleanDance.gif").toURI().toString());
+
+        Main.blocked = true;
     }
 
     @Override
@@ -73,11 +75,9 @@ public class TennaRun extends RandomRun {
 
                 root.getChildren().remove(imageView);
 
-                Main.activated = false;
-                if (Main.whileTrueThread != null && Main.whileTrueThread.isAlive()) {
-                    Main.whileTrueThread.interrupt();
-                }
                 tennaArmy();
+            } else {
+                Main.blocked = false;
             }
         });
 
@@ -116,8 +116,7 @@ public class TennaRun extends RandomRun {
             players.getFirst().stop();
             players.removeFirst();
 
-            Main.activated = true;
-            Main.whileTrue();
+            Main.blocked = false;
             root.getChildren().removeAll(tennas);
         });
 

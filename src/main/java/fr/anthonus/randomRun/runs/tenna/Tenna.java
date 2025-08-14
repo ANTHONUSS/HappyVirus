@@ -1,4 +1,4 @@
-package fr.anthonus.randomRun.tenna;
+package fr.anthonus.randomRun.runs.tenna;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

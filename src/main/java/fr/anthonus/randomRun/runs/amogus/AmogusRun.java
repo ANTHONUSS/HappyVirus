@@ -1,5 +1,6 @@
-package fr.anthonus.randomRun;
+package fr.anthonus.randomRun.runs.amogus;
 
+import fr.anthonus.randomRun.RandomRun;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
