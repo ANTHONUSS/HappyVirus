@@ -69,11 +69,10 @@ public class SpamtonRun extends RandomRun {
         double timeSeconds = distance / speedPerSecond;
         long timeMillis = (long)(timeSeconds * 1000);
 
-        long pipisTime = rand.nextLong(timeMillis);
+        long pipisTime = rand.nextLong(50, timeMillis-50);
         long startTime = System.currentTimeMillis();
-        final boolean[] hasTriggered = {false}; // pour ne déclencher qu'une fois
+        final boolean[] hasTriggered = {false};
 
-        SpamtonRun run = this;
         AnimationTimer moveTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -81,20 +80,16 @@ public class SpamtonRun extends RandomRun {
                 if (!hasTriggered[0] && elapsed >= pipisTime) {
                     hasTriggered[0] = true;
 
-                    Pipis newPipis = new Pipis(pipisImage, imageView.getLayoutX(), imageView.getLayoutY());
+                    Pipis newPipis = new Pipis(pipisImage, imageView.getLayoutX()+30, imageView.getLayoutY()+70);
                     pipis.add(newPipis);
                     root.getChildren().add(newPipis);
-
-                    System.out.println("Time reached: " + pipisTime + "ms");
+                    newPipis.toBack();
                 }
                 double x = imageView.getLayoutX() - speed;
                 double y = imageView.getLayoutY() + amplitude * Math.sin(frequency * x);
 
                 if (imageView.getLayoutX() < -250) {
-                    players.forEach(MediaPlayer::stop);
-                    root.getChildren().remove(imageView);
-                    Main.activeRuns.remove(run);
-                    stop();
+                    this.stop();
                 }
 
                 imageView.setLayoutX(x);
@@ -126,9 +121,9 @@ public class SpamtonRun extends RandomRun {
     }
 
     @Override
-    public void stop() {
+    protected void stop() {
         super.stop();
-        pipis.forEach(pipis -> root.getChildren().remove(pipis));
+        root.getChildren().removeAll(pipis);
         pipis.clear();
     }
 }

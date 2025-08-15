@@ -71,19 +71,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         whileTrue();
 
-        Thread tmp = new Thread(() -> {
-            while(true){
-                System.out.println(activeRuns.size());
-
-                try {
-                    Thread.sleep(1_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        tmp.start();
-
         launch(args);
     }
 

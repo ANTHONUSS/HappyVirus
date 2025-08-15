@@ -56,7 +56,7 @@ public class TennaRun extends RandomRun {
 
         Timeline appear = new Timeline(
                 new KeyFrame(Duration.seconds(0)),
-                new KeyFrame(Duration.seconds(2.5),
+                new KeyFrame(Duration.seconds(2),
                         new KeyValue(imageView.fitHeightProperty(), screenHeight * 2, Interpolator.EASE_IN),
                         new KeyValue(imageView.layoutXProperty(), screenWidth / 2 - 500, Interpolator.EASE_IN),
                         new KeyValue(imageView.layoutYProperty(), -screenHeight / 2, Interpolator.EASE_IN)
@@ -110,12 +110,7 @@ public class TennaRun extends RandomRun {
         tennas.add(new Tenna(correctTennaImage));
 
         tennas.getFirst().setOnMousePressed(_ -> {
-            players.getFirst().stop();
-            players.removeFirst();
-
-            Main.blocked = false;
-            root.getChildren().removeAll(tennas);
-            Main.activeRuns.remove(this);
+            this.stop();
         });
 
         for (int i = 0; i < tennaImages.length * 10; i++) {
@@ -132,30 +127,33 @@ public class TennaRun extends RandomRun {
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
-        Timeline moveTimeline = new Timeline(
-                new KeyFrame(Duration.millis(16), e -> {
-                    for (Tenna tenna : tennas) {
-                        double x = tenna.getLayoutX() + tenna.speed;
-                        double y = tenna.baseY + tenna.amplitude * Math.sin(tenna.frequency * x + tenna.phase);
-                        if (tenna.getLayoutX() > screenWidth) {
-                            x = -Tenna.size;
-                            y = rand.nextDouble(0, screenHeight - Tenna.size);
-                            tenna.baseY = y;
-                        }
-                        tenna.setLayoutX(x);
-                        tenna.setLayoutY(y);
-
+        AnimationTimer moveTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                for (Tenna tenna : tennas) {
+                    double x = tenna.getLayoutX() + tenna.speed;
+                    double y = tenna.baseY + tenna.amplitude * Math.sin(tenna.frequency * x + tenna.phase);
+                    if (tenna.getLayoutX() > screenWidth) {
+                        x = -Tenna.size;
+                        y = rand.nextDouble(0, screenHeight - Tenna.size);
+                        tenna.baseY = y;
                     }
-                }));
-        timelines.add(moveTimeline);
-        moveTimeline.setCycleCount(Timeline.INDEFINITE);
+                    tenna.setLayoutX(x);
+                    tenna.setLayoutY(y);
+                }
+            }
+        };
+        timers.add(moveTimer);
 
-        moveTimeline.play();
+        moveTimer.start();
     }
 
     @Override
     public void stop() {
         super.stop();
+        root.getChildren().removeAll(tennas);
+        tennas.clear();
+
         Main.blocked = false;
     }
 }
