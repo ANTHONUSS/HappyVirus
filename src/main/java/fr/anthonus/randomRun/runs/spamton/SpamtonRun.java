@@ -1,8 +1,6 @@
 package fr.anthonus.randomRun.runs.spamton;
 
-import fr.anthonus.Main;
 import fr.anthonus.randomRun.RandomRun;
-import fr.anthonus.randomRun.runs.tenna.Tenna;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -59,8 +57,8 @@ public class SpamtonRun extends RandomRun {
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
-        double speed = rand.nextDouble(15, 25);
-        double amplitude = rand.nextDouble(10, 15);
+        double speed = rand.nextDouble(20, 25);
+        double amplitude = rand.nextDouble(15, 20);
         double frequency = rand.nextDouble(0.001, 0.01);
 
         double distance = screenWidth + 250;
@@ -80,7 +78,8 @@ public class SpamtonRun extends RandomRun {
                 if (!hasTriggered[0] && elapsed >= pipisTime) {
                     hasTriggered[0] = true;
 
-                    Pipis newPipis = new Pipis(pipisImage, imageView.getLayoutX()+30, imageView.getLayoutY()+70);
+                    Image imageToUse = rand.nextDouble(100) <= 0.5 ? msPipisImage : pipisImage;
+                    Pipis newPipis = new Pipis(imageToUse, imageView.getLayoutX()+30, imageView.getLayoutY()+70);
                     pipis.add(newPipis);
                     root.getChildren().add(newPipis);
                     newPipis.toBack();

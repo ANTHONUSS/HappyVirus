@@ -156,12 +156,15 @@ public class Main extends Application {
             });
 
             // Placement dans la fenêtre
-            gbc.gridx = 0; gbc.gridy = 0;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
             dialog.add(new JLabel("Probabilité (1-100) :"), gbc);
             gbc.gridx = 1;
             dialog.add(spinner, gbc);
 
-            gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2;
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 2;
             dialog.add(okButton, gbc);
 
             dialog.pack();
@@ -311,13 +314,12 @@ public class Main extends Application {
                     activeRuns.add(tenna);
                 }
                 case 5 -> {
-
                     SpamtonRun spamton = new SpamtonRun(
                             root,
                             "/runAssets/spamton/spamton_angel.gif",
                             "/runAssets/spamton/spamton.mp3",
                             screenWidth,
-                            rand.nextDouble(500 , screenHeight - 500),
+                            rand.nextDouble(500, screenHeight - 500),
                             250,
                             250,
                             1

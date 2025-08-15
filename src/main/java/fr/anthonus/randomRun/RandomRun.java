@@ -54,9 +54,17 @@ public abstract class RandomRun {
 
     protected void stop(){
         players.forEach(MediaPlayer::stop);
+        players.forEach(MediaPlayer::dispose);
+        players.clear();
+
         timelines.forEach(Timeline::stop);
+        timelines.clear();
         timers.forEach(AnimationTimer::stop);
+        timers.clear();
+
+        imageView.setImage(null);
         root.getChildren().remove(imageView);
+
         Main.activeRuns.remove(this);
     }
 }
