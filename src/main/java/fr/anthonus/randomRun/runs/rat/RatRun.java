@@ -27,7 +27,7 @@ public class RatRun extends RandomRun {
 
     @Override
     public void run() {
-        addDeleteListener(this);
+        addDeleteListener();
 
         double bpm = 113/4.0;
         double intervalSeconds = 60.0 / bpm;
@@ -48,6 +48,7 @@ public class RatRun extends RandomRun {
                     imageY=randomY;
                 })
         );
+        timelines.add(bpmTimer);
         bpmTimer.setCycleCount(Timeline.INDEFINITE);
         bpmTimer.setDelay(Duration.seconds(offsetSeconds));
 

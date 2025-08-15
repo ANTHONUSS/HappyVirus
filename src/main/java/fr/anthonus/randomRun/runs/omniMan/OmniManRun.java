@@ -21,7 +21,7 @@ public class OmniManRun extends RandomRun {
 
     @Override
     public void run() {
-        addDeleteListener(this);
+        addDeleteListener();
 
         MediaPlayer player = players.getFirst();
         player.setCycleCount(MediaPlayer.INDEFINITE);

@@ -42,8 +42,6 @@ public class Utils {
         imageView.setLayoutY(y);
         imageView.setCursor(Cursor.HAND);
 
-        imageView.setPickOnBounds(true);
-
         return imageView;
     }
 

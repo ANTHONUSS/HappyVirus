@@ -3,17 +3,13 @@ package fr.anthonus.randomRun.runs.tenna;
 import fr.anthonus.Main;
 import fr.anthonus.randomRun.RandomRun;
 import fr.anthonus.utils.Utils;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -54,10 +50,9 @@ public class TennaRun extends RandomRun {
 
     @Override
     public void run() {
-        addDeleteListener(this);
+        addDeleteListener();
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
-
 
         Timeline appear = new Timeline(
                 new KeyFrame(Duration.seconds(0)),
@@ -67,6 +62,7 @@ public class TennaRun extends RandomRun {
                         new KeyValue(imageView.layoutYProperty(), -screenHeight / 2, Interpolator.EASE_IN)
                 )
         );
+        timelines.add(appear);
 
         appear.setOnFinished(_ -> {
             if (!finished) {
@@ -102,6 +98,7 @@ public class TennaRun extends RandomRun {
                     moveTennas();
                 })
         );
+        timelines.add(game);
 
         game.play();
         player.play();
@@ -147,9 +144,18 @@ public class TennaRun extends RandomRun {
                         }
                         tenna.setLayoutX(x);
                         tenna.setLayoutY(y);
+
                     }
                 }));
+        timelines.add(moveTimeline);
         moveTimeline.setCycleCount(Timeline.INDEFINITE);
+
         moveTimeline.play();
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        Main.blocked = false;
     }
 }

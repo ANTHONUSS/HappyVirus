@@ -56,7 +56,7 @@ public class GokuRun extends RandomRun {
             tpLeft[0]--;
         });
 
-        addDeleteListener(this);
+        addDeleteListener();
 
         MediaPlayer player = players.getFirst();
         player.setCycleCount(MediaPlayer.INDEFINITE);
@@ -76,6 +76,7 @@ public class GokuRun extends RandomRun {
                             new KeyValue(player.volumeProperty(), maxVolume)
                     )
             );
+            timelines.add(fadeIn);
 
             fadeIn.setOnFinished(_ -> player.setCycleCount(MediaPlayer.INDEFINITE));
 

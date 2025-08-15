@@ -5,6 +5,7 @@ import fr.anthonus.randomRun.runs.amogus.AmogusRun;
 import fr.anthonus.randomRun.runs.goku.GokuRun;
 import fr.anthonus.randomRun.runs.omniMan.OmniManRun;
 import fr.anthonus.randomRun.runs.rat.RatRun;
+import fr.anthonus.randomRun.runs.spamton.SpamtonRun;
 import fr.anthonus.randomRun.runs.tenna.TennaRun;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -70,6 +71,19 @@ public class Main extends Application {
     public static void main(String[] args) {
         whileTrue();
 
+        Thread tmp = new Thread(() -> {
+            while(true){
+                System.out.println(activeRuns.size());
+
+                try {
+                    Thread.sleep(1_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        tmp.start();
+
         launch(args);
     }
 
@@ -91,7 +105,7 @@ public class Main extends Application {
                 double randomChance = rand.nextDouble(0, 100);
 
                 System.out.println("Random chance: " + randomChance + "%");
-                if (randomChance < probabilite) createRandomRun(rand.nextInt(0, 5));
+                if (randomChance < probabilite) createRandomRun(rand.nextInt(0, 6));
 
                 try {
                     Thread.sleep(1_000);
@@ -209,6 +223,10 @@ public class Main extends Application {
         MenuItem tennaRunItem = new MenuItem("Tenna");
         runMenu.add(tennaRunItem);
 
+        // Ajout de l'item pour le TennaRun
+        MenuItem spamtonRunItem = new MenuItem("Spamton");
+        runMenu.add(spamtonRunItem);
+
         // ajout des listeners aux items
         for (int i = 0; i < runMenu.getItemCount(); i++) {
             final int type = i;
@@ -304,6 +322,21 @@ public class Main extends Application {
                     );
                     tenna.run();
                     activeRuns.add(tenna);
+                }
+                case 5 -> {
+
+                    SpamtonRun spamton = new SpamtonRun(
+                            root,
+                            "/runAssets/spamton/spamton_angel.gif",
+                            "/runAssets/spamton/spamton.mp3",
+                            screenWidth,
+                            rand.nextDouble(500 , screenHeight - 500),
+                            250,
+                            250,
+                            1
+                    );
+                    spamton.run();
+                    activeRuns.add(spamton);
                 }
             }
         });

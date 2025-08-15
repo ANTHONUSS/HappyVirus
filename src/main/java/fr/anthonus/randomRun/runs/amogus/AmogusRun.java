@@ -26,7 +26,7 @@ public class AmogusRun extends RandomRun {
 
     @Override
     public void run() {
-        addDeleteListener(this);
+        addDeleteListener();
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
 
         Timeline showUp = new Timeline(
@@ -35,6 +35,7 @@ public class AmogusRun extends RandomRun {
                         new KeyValue(imageView.layoutYProperty(), screenHeight - imageHeight - 10)
                 )
         );
+        timelines.add(showUp);
 
         MediaPlayer player = players.getFirst();
         player.setCycleCount(Timeline.INDEFINITE);

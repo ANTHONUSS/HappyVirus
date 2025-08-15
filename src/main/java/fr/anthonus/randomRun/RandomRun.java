@@ -2,6 +2,8 @@ package fr.anthonus.randomRun;
 
 import fr.anthonus.Main;
 import fr.anthonus.utils.Utils;
+import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
@@ -23,6 +25,8 @@ public abstract class RandomRun {
     protected ImageView imageView;
 
     protected final List<MediaPlayer> players = new ArrayList<>();
+    protected final List<Timeline> timelines = new ArrayList<>();
+    protected final List<AnimationTimer> timers = new ArrayList<>();
 
     protected boolean finished = false;
 
@@ -42,12 +46,17 @@ public abstract class RandomRun {
 
     public abstract void run();
 
-    protected void addDeleteListener(RandomRun child) {
+    protected void addDeleteListener() {
         imageView.setOnMousePressed(_ -> {
-            players.forEach(MediaPlayer::stop);
-            root.getChildren().remove(imageView);
-            finished = true;
-            Main.activeRuns.remove(child);
+            stop();
         });
+    }
+
+    protected void stop(){
+        players.forEach(MediaPlayer::stop);
+        timelines.forEach(Timeline::stop);
+        timers.forEach(AnimationTimer::stop);
+        root.getChildren().remove(imageView);
+        Main.activeRuns.remove(this);
     }
 }
