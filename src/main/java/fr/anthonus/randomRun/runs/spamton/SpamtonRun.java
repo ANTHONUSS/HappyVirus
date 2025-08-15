@@ -11,13 +11,12 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SpamtonRun extends RandomRun {
-    private static final List<Pipis> pipis = new ArrayList<>();
+    private static final List<Pipis> pipisList = new ArrayList<>();
     private static final Image pipisImage = new Image(SpamtonRun.class.getResource("/runAssets/spamton/pipis.png").toExternalForm());
     private static final Image msPipisImage = new Image(SpamtonRun.class.getResource("/runAssets/spamton/msPipis.png").toExternalForm());
 
@@ -79,8 +78,8 @@ public class SpamtonRun extends RandomRun {
                     hasTriggered[0] = true;
 
                     Image imageToUse = rand.nextDouble(100) <= 0.5 ? msPipisImage : pipisImage;
-                    Pipis newPipis = new Pipis(imageToUse, imageView.getLayoutX()+30, imageView.getLayoutY()+70);
-                    pipis.add(newPipis);
+                    Pipis newPipis = new Pipis(imageToUse, imageView.getLayoutX()+30, imageView.getLayoutY()+70, pipisList);
+                    pipisList.add(newPipis);
                     root.getChildren().add(newPipis);
                     newPipis.toBack();
                 }
@@ -122,7 +121,7 @@ public class SpamtonRun extends RandomRun {
     @Override
     protected void stop() {
         super.stop();
-        root.getChildren().removeAll(pipis);
-        pipis.clear();
+        root.getChildren().removeAll(pipisList);
+        pipisList.clear();
     }
 }

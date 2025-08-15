@@ -35,7 +35,7 @@ public class TennaRun extends RandomRun {
                 imageOpacity
         );
 
-        tennaImages = new Image[]{
+        tennaImages = new Image[] {
                 new Image(getClass().getResource("/runAssets/tenna/tennaBend.gif").toExternalForm()),
                 new Image(getClass().getResource("/runAssets/tenna/tennaKick.gif").toExternalForm()),
                 new Image(getClass().getResource("/runAssets/tenna/tennaDance.gif").toExternalForm()),
