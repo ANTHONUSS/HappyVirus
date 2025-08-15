@@ -87,7 +87,7 @@ public class SpamtonRun extends RandomRun {
                 double y = imageView.getLayoutY() + amplitude * Math.sin(frequency * x);
 
                 if (imageView.getLayoutX() < -250) {
-                    this.stop();
+                    spamStop();
                 }
 
                 imageView.setLayoutX(x);
@@ -123,5 +123,9 @@ public class SpamtonRun extends RandomRun {
         super.stop();
         root.getChildren().removeAll(pipisList);
         pipisList.clear();
+    }
+
+    protected void spamStop() {
+        super.stop();
     }
 }
