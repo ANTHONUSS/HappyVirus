@@ -5,7 +5,9 @@ import fr.anthonus.randomRun.RandomRun;
 import fr.anthonus.utils.Utils;
 import javafx.animation.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.util.Duration;
@@ -15,19 +17,23 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TennaRun extends RandomRun {
-    private final Image[] tennaImages;
-    private final Image correctTennaImage;
+    private static final Image tennaRunningImage = Utils.createImage("/runAssets/tenna/tennaRun.gif");
+    private static final Image correctTennaImage = Utils.createImage("/runAssets/tenna/tennaCleanDance.gif");
+    private static final Image[] tennaImages = {
+        Utils.createImage("/runAssets/tenna/tennaBend.gif"),
+        Utils.createImage("/runAssets/tenna/tennaCrazy.gif"),
+        Utils.createImage("/runAssets/tenna/tennaDance.gif"),
+        Utils.createImage("/runAssets/tenna/tennaKick.gif"),
+        Utils.createImage("/runAssets/tenna/tennaSpin.gif")
+    };
+    private static final Media runningSound = Utils.createMedia("/runAssets/tenna/running.mp3");
+    private static final Media tvTimeSong = Utils.createMedia("/runAssets/tenna/tvTime.mp3");
 
     private final List<Tenna> tennas = new ArrayList<>();
 
-    private static final String tvTimeSong = "/runAssets/tenna/tvTime.mp3";
-
-
-    public TennaRun(Pane root, String imagePath, String soundPath, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) {
+    public TennaRun(Pane root, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) {
         super(
                 root,
-                imagePath,
-                soundPath,
                 imageX,
                 imageY,
                 imageWitdh,
@@ -35,41 +41,37 @@ public class TennaRun extends RandomRun {
                 imageOpacity
         );
 
-        tennaImages = new Image[] {
-                new Image(getClass().getResource("/runAssets/tenna/tennaBend.gif").toExternalForm()),
-                new Image(getClass().getResource("/runAssets/tenna/tennaKick.gif").toExternalForm()),
-                new Image(getClass().getResource("/runAssets/tenna/tennaDance.gif").toExternalForm()),
-                new Image(getClass().getResource("/runAssets/tenna/tennaSpin.gif").toExternalForm()),
-                new Image(getClass().getResource("/runAssets/tenna/tennaCrazy.gif").toExternalForm())
-        };
-
-        correctTennaImage = new Image(getClass().getResource("/runAssets/tenna/tennaCleanDance.gif").toExternalForm());
-
         Main.blocked = true;
     }
 
     @Override
     public void run() {
-        addDeleteListener();
-        double screenHeight = Screen.getPrimary().getBounds().getHeight();
-        double screenWidth = Screen.getPrimary().getBounds().getWidth();
+        ImageView tennaRunningImageView = Utils.createImageView(tennaRunningImage, imageX, imageY, imageWitdh, imageHeight, imageOpacity);
+        imageViews.add(tennaRunningImageView);
+        addStopListener(tennaRunningImageView);
+
+        MediaPlayer runningMediaPlayer = Utils.createMediaPlayer(runningSound, maxVolume, false);
+        mediaPlayers.add(runningMediaPlayer);
 
         Timeline appear = new Timeline(
                 new KeyFrame(Duration.seconds(0)),
                 new KeyFrame(Duration.seconds(2),
-                        new KeyValue(imageView.fitHeightProperty(), screenHeight * 2, Interpolator.EASE_IN),
-                        new KeyValue(imageView.layoutXProperty(), screenWidth / 2 - 500, Interpolator.EASE_IN),
-                        new KeyValue(imageView.layoutYProperty(), -screenHeight / 2, Interpolator.EASE_IN)
+                        new KeyValue(tennaRunningImageView.fitHeightProperty(), screenHeight * 2, Interpolator.EASE_IN),
+                        new KeyValue(tennaRunningImageView.layoutXProperty(), screenWidth / 2 - 500, Interpolator.EASE_IN),
+                        new KeyValue(tennaRunningImageView.layoutYProperty(), -screenHeight / 2, Interpolator.EASE_IN)
                 )
         );
         timelines.add(appear);
 
         appear.setOnFinished(_ -> {
             if (!finished) {
-                players.getFirst().stop();
-                players.removeFirst();
+                runningMediaPlayer.stop();
+                runningMediaPlayer.dispose();
+                mediaPlayers.remove(runningMediaPlayer);
 
-                root.getChildren().remove(imageView);
+                root.getChildren().remove(tennaRunningImageView);
+                tennaRunningImageView.setImage(null);
+                imageViews.remove(tennaRunningImageView);
 
                 tennaArmy();
             } else {
@@ -77,18 +79,14 @@ public class TennaRun extends RandomRun {
             }
         });
 
-        MediaPlayer player = players.getFirst();
-
-        root.getChildren().add(imageView);
+        root.getChildren().add(tennaRunningImageView);
         appear.play();
-        player.play();
+        runningMediaPlayer.play();
     }
 
     private void tennaArmy() {
-        MediaPlayer player = Utils.createMediaPlayer(tvTimeSong);
-        player.setCycleCount(MediaPlayer.INDEFINITE);
-        player.setVolume(maxVolume);
-        players.add(player);
+        MediaPlayer tvTimeMediaPlayer = Utils.createMediaPlayer(tvTimeSong, maxVolume, true);
+        mediaPlayers.add(tvTimeMediaPlayer);
 
         Timeline game = new Timeline(
                 new KeyFrame(Duration.seconds(0), _ -> {
@@ -101,17 +99,14 @@ public class TennaRun extends RandomRun {
         timelines.add(game);
 
         game.play();
-        player.play();
+        tvTimeMediaPlayer.play();
     }
 
     private void addTennas() {
         tennas.clear();
 
         tennas.add(new Tenna(correctTennaImage));
-
-        tennas.getFirst().setOnMousePressed(_ -> {
-            this.stop();
-        });
+        tennas.getFirst().setOnMousePressed(_ -> this.stop());
 
         for (int i = 0; i < tennaImages.length * 10; i++) {
             int tennaIndex = i % tennaImages.length;
@@ -123,10 +118,6 @@ public class TennaRun extends RandomRun {
     }
 
     private void moveTennas() {
-        double screenHeight = Screen.getPrimary().getBounds().getHeight();
-        double screenWidth = Screen.getPrimary().getBounds().getWidth();
-        ThreadLocalRandom rand = ThreadLocalRandom.current();
-
         AnimationTimer moveTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {

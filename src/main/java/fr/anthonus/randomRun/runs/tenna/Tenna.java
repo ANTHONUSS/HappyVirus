@@ -20,8 +20,6 @@ public class Tenna extends ImageView {
         super(image);
         setFitHeight(size);
         setPreserveRatio(true);
-        setSmooth(true);
-        setCache(true);
 
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
         double screenWidth = Screen.getPrimary().getBounds().getWidth();

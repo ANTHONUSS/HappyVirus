@@ -1,12 +1,15 @@
 package fr.anthonus.randomRun.runs.spamton;
 
 import fr.anthonus.randomRun.RandomRun;
+import fr.anthonus.utils.Utils;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.util.Duration;
@@ -16,15 +19,16 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SpamtonRun extends RandomRun {
-    private static final List<Pipis> pipisList = new ArrayList<>();
-    private static final Image pipisImage = new Image(SpamtonRun.class.getResource("/runAssets/spamton/pipis.png").toExternalForm());
-    private static final Image msPipisImage = new Image(SpamtonRun.class.getResource("/runAssets/spamton/msPipis.png").toExternalForm());
+    private static final Image spamtonImage = Utils.createImage("/runAssets/spamton/spamton_angel.gif");
+    private static final Image pipisImage = Utils.createImage("/runAssets/spamton/pipis.png");
+    private static final Image msPipisImage = Utils.createImage("/runAssets/spamton/msPipis.png");
+    private static final Media spamtonSound = Utils.createMedia("/runAssets/spamton/spamton.mp3");
 
-    public SpamtonRun(Pane root, String imagePath, String soundPath, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) {
+    private static final List<Pipis> pipisList = new ArrayList<>();
+
+    public SpamtonRun(Pane root, double imageX, double imageY, double imageWitdh, double imageHeight, double imageOpacity) {
         super(
                 root,
-                imagePath,
-                soundPath,
                 imageX,
                 imageY,
                 imageWitdh,
@@ -35,27 +39,24 @@ public class SpamtonRun extends RandomRun {
 
     @Override
     public void run() {
-        addDeleteListener();
-        ThreadLocalRandom rand = ThreadLocalRandom.current();
+        ImageView spamtonImageView = Utils.createImageView(spamtonImage, imageX, imageY, imageWitdh, imageHeight, imageOpacity);
+        imageViews.add(spamtonImageView);
+        addStopListener(spamtonImageView);
+
+        MediaPlayer spamtonMediaPlayer = Utils.createMediaPlayer(spamtonSound, 0, false);
+        mediaPlayers.add(spamtonMediaPlayer);
+
+        spamtonMediaPlayer.setOnReady(() -> {
+            spamtonMediaPlayer.seek(Duration.millis(rand.nextInt(0, 30_000)));
 
 
-        MediaPlayer player = players.getFirst();
-        player.setVolume(0);
-
-        player.setOnReady(() -> {
-            player.seek(Duration.millis(rand.nextInt(0, 30_000)));
-
-
-            root.getChildren().add(imageView);
-            moveSpamton();
-            player.play();
+            root.getChildren().add(spamtonImageView);
+            moveSpamton(spamtonImageView, spamtonMediaPlayer);
+            spamtonMediaPlayer.play();
         });
     }
 
-    private void moveSpamton() {
-        double screenWidth = Screen.getPrimary().getBounds().getWidth();
-        ThreadLocalRandom rand = ThreadLocalRandom.current();
-
+    private void moveSpamton(ImageView spamtonImageView, MediaPlayer spamtonMediaPlayer) {
         double speed = rand.nextDouble(20, 25);
         double amplitude = rand.nextDouble(15, 20);
         double frequency = rand.nextDouble(0.001, 0.01);
@@ -78,38 +79,37 @@ public class SpamtonRun extends RandomRun {
                     hasTriggered[0] = true;
 
                     Image imageToUse = rand.nextDouble(100) <= 0.5 ? msPipisImage : pipisImage;
-                    Pipis newPipis = new Pipis(imageToUse, imageView.getLayoutX()+30, imageView.getLayoutY()+70, pipisList);
+                    Pipis newPipis = new Pipis(imageToUse, spamtonImageView.getLayoutX()+30, spamtonImageView.getLayoutY()+70, pipisList);
                     pipisList.add(newPipis);
                     root.getChildren().add(newPipis);
                     newPipis.toBack();
                 }
-                double x = imageView.getLayoutX() - speed;
-                double y = imageView.getLayoutY() + amplitude * Math.sin(frequency * x);
+                double x = spamtonImageView.getLayoutX() - speed;
+                double y = spamtonImageView.getLayoutY() + amplitude * Math.sin(frequency * x);
 
-                if (imageView.getLayoutX() < -250) {
+                if (spamtonImageView.getLayoutX() < -250) {
                     spamStop();
                 }
 
-                imageView.setLayoutX(x);
-                imageView.setLayoutY(y);
+                spamtonImageView.setLayoutX(x);
+                spamtonImageView.setLayoutY(y);
             }
         };
         timers.add(moveTimer);
 
-        MediaPlayer player = players.getFirst();
         long fadeMillis = timeMillis/3;
         Timeline soundFade = new Timeline(
                 new KeyFrame(Duration.ZERO,
-                        new KeyValue(player.volumeProperty(), 0.0)
+                        new KeyValue(spamtonMediaPlayer.volumeProperty(), 0.0)
                 ),
                 new KeyFrame(Duration.millis(fadeMillis),
-                        new KeyValue(player.volumeProperty(), maxVolume)
+                        new KeyValue(spamtonMediaPlayer.volumeProperty(), maxVolume)
                 ),
                 new KeyFrame(Duration.millis(timeMillis-fadeMillis),
-                        new KeyValue(player.volumeProperty(), maxVolume)
+                        new KeyValue(spamtonMediaPlayer.volumeProperty(), maxVolume)
                 ),
                 new KeyFrame(Duration.millis(timeMillis),
-                        new KeyValue(player.volumeProperty(), 0.0)
+                        new KeyValue(spamtonMediaPlayer.volumeProperty(), 0.0)
                 )
         );
         timelines.add(soundFade);
@@ -119,13 +119,13 @@ public class SpamtonRun extends RandomRun {
     }
 
     @Override
-    protected void stop() {
+    public void stop() {
         super.stop();
         root.getChildren().removeAll(pipisList);
         pipisList.clear();
     }
 
-    protected void spamStop() {
+    private void spamStop() {
         super.stop();
     }
 }

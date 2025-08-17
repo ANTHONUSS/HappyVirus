@@ -13,8 +13,6 @@ public class Pipis extends ImageView {
         super(image);
         setFitHeight(size);
         setPreserveRatio(true);
-        setCache(true);
-        setPickOnBounds(true);
 
         setLayoutX(x);
         setLayoutY(y);

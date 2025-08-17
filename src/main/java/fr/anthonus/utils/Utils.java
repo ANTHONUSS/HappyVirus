@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class Utils {
 
-    public static ImageView createImage(String path, double x, double y, double w, double h, double o) {
+    public static Image createImage(String path) {
         String url;
         File f = new File(path);
         if (f.exists()) {
@@ -25,18 +25,16 @@ public class Utils {
             }
         }
 
-        double requiredWidth = (w > 0) ? w : 0;
-        double requiredHeight = (h > 0) ? h : 0;
-        Image img = new Image(url, requiredWidth, requiredHeight, true, true, true);
+        return new Image(url, 0, 0, true, true, false);
+    }
 
-        ImageView imageView = new ImageView(img);
+    public static ImageView createImageView(Image image, double x, double y, double w, double h, double o) {
+        ImageView imageView = new ImageView(image);
 
-        if (w > 0) imageView.setFitWidth(w);
-        if (h > 0) imageView.setFitHeight(h);
+        imageView.setFitWidth(w);
+        imageView.setFitHeight(h);
         imageView.setPreserveRatio(true);
         imageView.setOpacity(o);
-        imageView.setSmooth(true);
-        imageView.setCache(true);
 
         imageView.setLayoutX(x);
         imageView.setLayoutY(y);
@@ -47,7 +45,7 @@ public class Utils {
         return imageView;
     }
 
-    public static MediaPlayer createMediaPlayer(String path) {
+    public static Media createMedia(String path) {
         String url;
         File f = new File(path);
         if (f.exists()) {
@@ -61,9 +59,14 @@ public class Utils {
             }
         }
 
-        Media media = new Media(url);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        return new Media(url);
+    }
 
+    public static MediaPlayer createMediaPlayer(Media media, double volume, boolean infinitePlay) {
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(volume);
+        if (infinitePlay) mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        else mediaPlayer.setOnEndOfMedia(mediaPlayer::dispose);
         return mediaPlayer;
     }
 }

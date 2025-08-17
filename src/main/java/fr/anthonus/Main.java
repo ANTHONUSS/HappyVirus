@@ -244,8 +244,6 @@ public class Main extends Application {
                     double newRandomSize = rand.nextDouble(150, 200);
                     OmniManRun omniman = new OmniManRun(
                             root,
-                            "/runAssets/omniMan/omniMan.png",
-                            "/runAssets/omniMan/omniMan.wav",
                             randomX,
                             randomY,
                             newRandomSize,
@@ -258,8 +256,6 @@ public class Main extends Application {
                 case 1 -> {
                     GokuRun goku = new GokuRun(
                             root,
-                            "/runAssets/goku/goku.png",
-                            "/runAssets/goku/goku.wav",
                             randomX,
                             randomY,
                             randomSize,
@@ -272,8 +268,6 @@ public class Main extends Application {
                 case 2 -> {
                     RatRun rat = new RatRun(
                             root,
-                            "/runAssets/rat-dance/rat-dance.gif",
-                            "/runAssets/rat-dance/rat-dance.wav",
                             randomX,
                             randomY,
                             randomSize,
@@ -286,8 +280,6 @@ public class Main extends Application {
                 case 3 -> {
                     AmogusRun amogus = new AmogusRun(
                             root,
-                            "/runAssets/amogus/amogus.png",
-                            "/runAssets/amogus/amogus.wav",
                             randomX,
                             screenHeight,
                             randomSize,
@@ -302,8 +294,6 @@ public class Main extends Application {
 
                     TennaRun tenna = new TennaRun(
                             root,
-                            "/runAssets/tenna/tennaRun.gif",
-                            "/runAssets/tenna/running.wav",
                             randomX,
                             randomY,
                             0,
@@ -316,8 +306,6 @@ public class Main extends Application {
                 case 5 -> {
                     SpamtonRun spamton = new SpamtonRun(
                             root,
-                            "/runAssets/spamton/spamton_angel.gif",
-                            "/runAssets/spamton/spamton.mp3",
                             screenWidth,
                             rand.nextDouble(500, screenHeight - 500),
                             250,
