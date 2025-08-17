@@ -32,7 +32,7 @@ public class Pipis extends ImageView {
         setLayoutX(x);
         setLayoutY(y);
 
-        Pipis.allPipis = allPipis;
+        if (Pipis.allPipis == null) Pipis.allPipis = allPipis;
 
         setOnMousePressed(event -> {
             grabbed = true;
@@ -62,12 +62,9 @@ public class Pipis extends ImageView {
         setOnMouseReleased(_ -> {
             grabbed = false;
 
-
-            // Appliquer le boost de lancer
             velocityX *= THROW_MULTIPLIER;
             velocityY *= THROW_MULTIPLIER;
 
-            // Plafonner la vitesse pour rester stable
             double speed = Math.hypot(velocityX, velocityY);
             if (speed > MAX_THROW_SPEED) {
                 double k = MAX_THROW_SPEED / speed;
