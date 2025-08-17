@@ -11,12 +11,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Screen;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class SpamtonRun extends RandomRun {
     private static final Image spamtonImage = Utils.createImage("/runAssets/spamton/spamton_angel.gif");
@@ -49,7 +47,6 @@ public class SpamtonRun extends RandomRun {
         spamtonMediaPlayer.setOnReady(() -> {
             spamtonMediaPlayer.seek(Duration.millis(rand.nextInt(0, 30_000)));
 
-
             root.getChildren().add(spamtonImageView);
             moveSpamton(spamtonImageView, spamtonMediaPlayer);
             spamtonMediaPlayer.play();
@@ -79,10 +76,12 @@ public class SpamtonRun extends RandomRun {
                     hasTriggered[0] = true;
 
                     Image imageToUse = rand.nextDouble(100) <= 0.5 ? msPipisImage : pipisImage;
-                    Pipis newPipis = new Pipis(imageToUse, spamtonImageView.getLayoutX()+30, spamtonImageView.getLayoutY()+70, pipisList);
-                    pipisList.add(newPipis);
-                    root.getChildren().add(newPipis);
-                    newPipis.toBack();
+                    for(int i = 0; i < 10; i++) {
+                        Pipis newPipis = new Pipis(imageToUse, spamtonImageView.getLayoutX() + 30, spamtonImageView.getLayoutY() + 70, pipisList);
+                        pipisList.add(newPipis);
+                        root.getChildren().add(newPipis);
+                        newPipis.toBack();
+                    }
                 }
                 double x = spamtonImageView.getLayoutX() - speed;
                 double y = spamtonImageView.getLayoutY() + amplitude * Math.sin(frequency * x);
