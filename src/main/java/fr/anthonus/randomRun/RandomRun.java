@@ -51,7 +51,11 @@ public abstract class RandomRun {
     public abstract void run();
 
     public void stop(){
-        imageViews.forEach(imageView -> imageView.setImage(null));
+        imageViews.forEach(imageView -> {
+            imageView.setImage(null);
+            imageView.setOnMousePressed(null);
+        });
+        root.getChildren().removeAll(imageViews);
         imageViews.clear();
 
         mediaPlayers.forEach(MediaPlayer::stop);

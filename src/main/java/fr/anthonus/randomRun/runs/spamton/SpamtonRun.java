@@ -119,9 +119,10 @@ public class SpamtonRun extends RandomRun {
 
     @Override
     public void stop() {
-        super.stop();
+        pipisList.forEach(pipis -> pipis.setImage(null));
         root.getChildren().removeAll(pipisList);
         pipisList.clear();
+        super.stop();
     }
 
     private void spamStop() {

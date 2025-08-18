@@ -141,10 +141,10 @@ public class TennaRun extends RandomRun {
 
     @Override
     public void stop() {
-        super.stop();
         root.getChildren().removeAll(tennas);
         tennas.clear();
 
         Main.blocked = false;
+        super.stop();
     }
 }
