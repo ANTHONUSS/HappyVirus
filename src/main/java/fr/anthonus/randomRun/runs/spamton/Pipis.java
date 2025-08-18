@@ -76,8 +76,10 @@ public class Pipis extends ImageView {
         AnimationTimer physicsTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                doPhysics();
-                doCollision();
+                if (!updateSleep()) {
+                    doPhysics();
+                    doCollision();
+                }
             }
         };
         physicsTimer.start();
@@ -87,6 +89,19 @@ public class Pipis extends ImageView {
         velocityX += rand.nextDouble(-10, 10);
         velocityY += rand.nextDouble(-10, 10);
 
+    }
+
+    private boolean updateSleep() {
+        double speed = Math.hypot(velocityX, velocityY);
+        double threshold = 0.1;
+
+        if (speed < threshold) {
+            velocityX = 0;
+            velocityY = 0;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void doPhysics() {
