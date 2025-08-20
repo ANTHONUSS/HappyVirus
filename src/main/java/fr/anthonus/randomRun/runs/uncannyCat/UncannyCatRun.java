@@ -156,6 +156,7 @@ public class UncannyCatRun extends RandomRun {
                     }
                     ));
             timelines.add(uncannyCatEndTimeline);
+            uncannyCatEndTimeline.play();
         }
 
         if (uncannyCatGolfMedia == null) {
@@ -171,6 +172,8 @@ public class UncannyCatRun extends RandomRun {
     private void initialStop(){
         allCats.forEach(UncannyCatRun::stop);
         allCats.clear();
+        uncannyCatGolfMedia = null;
+        uncannyCatEndTimeline = null;
 
         Main.blocked = false;
     }
