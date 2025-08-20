@@ -7,6 +7,7 @@ import fr.anthonus.randomRun.runs.omniMan.OmniManRun;
 import fr.anthonus.randomRun.runs.rat.RatRun;
 import fr.anthonus.randomRun.runs.spamton.SpamtonRun;
 import fr.anthonus.randomRun.runs.tenna.TennaRun;
+import fr.anthonus.randomRun.runs.uncannyCat.UncannyCatRun;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -92,7 +93,7 @@ public class Main extends Application {
                 double randomChance = rand.nextDouble(0, 100);
 
                 System.out.println("Random chance: " + randomChance + "%");
-                if (randomChance < probabilite) createRandomRun(rand.nextInt(0, 6));
+                if (randomChance < probabilite) createRandomRun(rand.nextInt(0, 7));
 
                 try {
                     Thread.sleep(1_000);
@@ -217,6 +218,10 @@ public class Main extends Application {
         MenuItem spamtonRunItem = new MenuItem("Spamton");
         runMenu.add(spamtonRunItem);
 
+        // Ajout de l'item pour le UncannyCatRun
+        MenuItem uncannyCatRunItem = new MenuItem("Uncanny Cat");
+        runMenu.add(uncannyCatRunItem);
+
         // ajout des listeners aux items
         for (int i = 0; i < runMenu.getItemCount(); i++) {
             final int type = i;
@@ -314,6 +319,18 @@ public class Main extends Application {
                     );
                     spamton.run();
                     activeRuns.add(spamton);
+                }
+                case 6 -> {
+                    UncannyCatRun uncannyCat = new UncannyCatRun(
+                            root,
+                            randomX,
+                            -randomSize*2,
+                            randomSize,
+                            randomSize,
+                            1
+                    );
+                    uncannyCat.run();
+                    activeRuns.add(uncannyCat);
                 }
             }
         });
